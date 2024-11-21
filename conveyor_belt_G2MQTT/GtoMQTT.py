@@ -45,6 +45,7 @@ def on_message(client, userdata, msg):
     res_topic = topic_parts[-2]
     last_partition = topic_parts[-1]
     try:
+        unknown_command = False
         payload = json.loads(msg.payload.decode())  # Assuming payload is JSON
         command = ""
         match last_partition:
@@ -83,18 +84,18 @@ def on_message(client, userdata, msg):
                 print("Handling Group G6")
             case _:
                 print("Group not recognized")
-        
-        # Send command to serial if available
-        if ser:
+                unknown_command = True
+
+        if not unknown_command:
+            # Send command to serial if available
             ser.write((command + '\n').encode())
             print(f"Sent to Serial: {command}")
-            
-        response_topic = f"command/bip-server/{DEVICE_ID}/res/{res_topic}/{last_partition}"
-        response_payload = {}
-        serialized_marker_ids = json.dumps(response_payload)
-        if last_partition != "G4":
-            client.publish(response_topic, serialized_marker_ids, qos=2)
-        print(f"Published trajectory to topic: {response_topic}")
+            if last_partition != "G4":
+                response_topic = f"command/bip-server/{DEVICE_ID}/res/{res_topic}/{last_partition}"
+                response_payload = {}
+                serialized_marker_ids = json.dumps(response_payload)
+                client.publish(response_topic, serialized_marker_ids, qos=2)
+                print(f"Published trajectory to topic: {response_topic}")
 
     except json.JSONDecodeError as e:
         print(f"Failed to decode JSON: {e}")
@@ -129,13 +130,13 @@ def serial_to_mqtt():
                         client.publish(PUB_TOPIC, json.dumps(json_dict))
                     elif "START_SENSOR" in json_dict:
                         global request_id
-                        client.publish(RESPOND_TOPIC + request_id, json.dumps(json_dict))
+                        client.publish(RESPOND_TOPIC + request_id +"/G4", json.dumps(json_dict))
             except (UnicodeDecodeError, ValueError) as e:
                 print(f"Error reading from serial: {e}")
             except Exception as e:
                 print(f"An unexpected error occurred while processing serial data: {e}")
 
-        time.sleep(0.1)  # Adjust as needed to avoid high CPU usage
+        time.sleep(0.01)  # Adjust as needed to avoid high CPU usage
 
 
 if __name__ == "__main__":
@@ -148,6 +149,7 @@ if __name__ == "__main__":
 
     # Connect to the broker
     client.connect(MQTT_BROKER, MQTT_PORT, keepalive=60)
+
     client.loop_start()
     serial_thread = threading.Thread(target=serial_to_mqtt, daemon=True)
     serial_thread.start()
