@@ -165,5 +165,5 @@ class DatabaseMQTTWrapper:
             self.dbconn.commit()
 
 if __name__ == "__main__":
-    wrapper = DatabaseMQTTWrapper(config_path="./gantry_system/crane-properties.yaml")
+    wrapper = DatabaseMQTTWrapper(config_path="./crane_optimal_control/gantry_system/crane-properties.yaml")
     wrapper.start()

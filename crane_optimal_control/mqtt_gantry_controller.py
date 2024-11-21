@@ -103,5 +103,5 @@ class ControllerMQTTWrapper:
         self.client.loop_forever()
 
 if __name__ == "__main__":
-    wrapper = ControllerMQTTWrapper("./gantry_system/crane-properties.yaml", mock= True)
+    wrapper = ControllerMQTTWrapper("./crane_optimal_control/gantry_system/crane-properties.yaml", mock= True)
     wrapper.start()
