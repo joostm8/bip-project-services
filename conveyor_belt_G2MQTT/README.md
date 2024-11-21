@@ -47,41 +47,45 @@ The following MQTT topics are used by this script:
 - **Payload**:
   ```json
   {
-    "dir": "left"
+    "dir": "F"
   }
   ```
-  - Description: Sends a "G1" command with direction "left" to the serial device.
-
+  - Description: Sends a "G1" command with direction "F" to the serial device.
+  - F for forwards, B for backwards.
 ##### G2 Command
 - **Topic**: `command/bip-server/{DEVICE_ID}/req/G2`
 - **Payload**:
   ```json
   {
-    "dir": "right",
-    "pulses": 150
+    "dir": "B",
+    "pulses": 20
   }
   ```
-  - Description: Sends a "G2" command with direction "right" and 150 pulses to the serial device.
-
+  - The `G2` command moves the conveyor forwards or backwards a certain amount of pulses/steps.
+  one pulse is 1/8th of a rotatino of the conveyor's axle.
 ##### G3 Command
 - **Topic**: `command/bip-server/{DEVICE_ID}/req/G3`
 - **Payload**:
   ```json
   {
-    "dir": "up"
+    "dir": "F"
   }
   ```
-  - Description: Sends a "G3" command with direction "up" to the serial device.
-
+  - The `G3` command moves the conveyor forwards or backwards until the object
+  on the conveyor meets the start/end sensor.
 ##### G4 Command
 - **Topic**: `command/bip-server/{DEVICE_ID}/req/G4`
 - **Payload**: No payload required
   - Description: Sends a "G4" command to the serial device.
+  - The `G4` command queries the sensor (start, stop and pulse counter) state.
+##### Returns
+
+  `START_SENSOR: [1/0], END_SENSOR [1/0], PULSE_COUNT: [integer]`
 
 ##### G5 Command
 - **Topic**: `command/bip-server/{DEVICE_ID}/req/G5`
 - **Payload**: No payload required
-  - Description: Sends a "G5" command to the serial device.
+  - Description: The `G5` command stops the conveyor.
 
 ##### G6 Command
 - **Topic**: `command/bip-server/{DEVICE_ID}/req/G6`
@@ -91,7 +95,7 @@ The following MQTT topics are used by this script:
     "on/off": 1
   }
   ```
-  - Description: Sends a "G6" command to turn the device on or off.
+  - Description: [on/off]: 0 to turn off, any other value to turn on.
 
 ### 2. Response Topics
 - **Publish Topic**: `command/bip-server/{DEVICE_ID}/res/{request_id}/{command}`
@@ -108,6 +112,9 @@ The following MQTT topics are used by this script:
       "V": 3.5
     }
     ```
+  - This output has the shape `A: SX.XX,V: SY.YY`, where S is the optional
+minus (-) sign, and the angle and angular velocity are printed with 2
+decmial places. 
 
 ## Usage
 1. Ensure your MQTT broker is running and accessible.
