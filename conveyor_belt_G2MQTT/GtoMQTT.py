@@ -148,7 +148,6 @@ if __name__ == "__main__":
 
     # Connect to the broker
     client.connect(MQTT_BROKER, MQTT_PORT, keepalive=60)
-s
     client.loop_start()
     serial_thread = threading.Thread(target=serial_to_mqtt, daemon=True)
     serial_thread.start()
