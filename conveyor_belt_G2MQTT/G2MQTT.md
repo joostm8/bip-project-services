@@ -1,0 +1,124 @@
+# G2MQTT Serial Interface - README
+
+## Overview
+This project is an interface that connects a serial device to an MQTT broker, enabling data transfer between the serial device and MQTT topics. The script listens for incoming MQTT messages, processes them, and sends appropriate commands to the serial device. It also publishes telemetry data from the serial device to specific MQTT topics.
+
+### Features
+- Subscribes to MQTT topics to receive commands.
+- Publishes telemetry and responses from a serial device to MQTT topics.
+- Supports multiple command groups (G1, G2, G3, G4, G5, G6).
+
+## Prerequisites
+- Python 3.x
+- [paho-mqtt](https://pypi.org/project/paho-mqtt/) library for MQTT communication
+- [pyserial](https://pypi.org/project/pyserial/) library for serial communication
+
+## Installation
+1. Clone the repository or download the Python script.
+2. Install the required Python packages:
+   ```sh
+   pip install paho-mqtt pyserial
+   ```
+
+## Configuration
+- **MQTT Broker**: Set the `MQTT_BROKER` and `MQTT_PORT` variables to match your MQTT broker settings.
+- **Device ID**: Set the `DEVICE_ID` variable to uniquely identify your device.
+- **Serial Port**: Update `SERIAL_PORT` with the appropriate port name (e.g., `COM5` for Windows, `/dev/ttyUSB0` for Linux).
+- **Baud Rate**: Set the desired `BAUD_RATE` for serial communication.
+
+## Running the Code
+Run the script using Python:
+```sh
+python G2MQTT.py
+```
+
+## MQTT Topics
+The following MQTT topics are used by this script:
+
+### 1. Command Topics
+- **Subscribe Topic**: `command/bip-server/{DEVICE_ID}/req/#`
+  - This topic listens for commands to be executed by the serial device.
+  - Replace `{DEVICE_ID}` with your device's unique ID.
+
+#### Command Examples:
+
+##### G1 Command
+- **Topic**: `command/bip-server/{DEVICE_ID}/req/G1`
+- **Payload**:
+  ```json
+  {
+    "dir": "left"
+  }
+  ```
+  - Description: Sends a "G1" command with direction "left" to the serial device.
+
+##### G2 Command
+- **Topic**: `command/bip-server/{DEVICE_ID}/req/G2`
+- **Payload**:
+  ```json
+  {
+    "dir": "right",
+    "pulses": 150
+  }
+  ```
+  - Description: Sends a "G2" command with direction "right" and 150 pulses to the serial device.
+
+##### G3 Command
+- **Topic**: `command/bip-server/{DEVICE_ID}/req/G3`
+- **Payload**:
+  ```json
+  {
+    "dir": "up"
+  }
+  ```
+  - Description: Sends a "G3" command with direction "up" to the serial device.
+
+##### G4 Command
+- **Topic**: `command/bip-server/{DEVICE_ID}/req/G4`
+- **Payload**: No payload required
+  - Description: Sends a "G4" command to the serial device.
+
+##### G5 Command
+- **Topic**: `command/bip-server/{DEVICE_ID}/req/G5`
+- **Payload**: No payload required
+  - Description: Sends a "G5" command to the serial device.
+
+##### G6 Command
+- **Topic**: `command/bip-server/{DEVICE_ID}/req/G6`
+- **Payload**:
+  ```json
+  {
+    "on/off": 1
+  }
+  ```
+  - Description: Sends a "G6" command to turn the device on or off.
+
+### 2. Response Topics
+- **Publish Topic**: `command/bip-server/{DEVICE_ID}/res/{request_id}/{command}`
+  - The script publishes responses to this topic based on the received command.
+  - Example response topic: `command/bip-server/1/res/req/G4`
+
+### 3. Telemetry Topic
+- **Publish Topic**: `telemetry/bip-server/{DEVICE_ID}`
+  - The script publishes telemetry data received from the serial device to this topic.
+  - Example telemetry data:
+    ```json
+    {
+      "A": 5.0,
+      "V": 3.5
+    }
+    ```
+
+## Usage
+1. Ensure your MQTT broker is running and accessible.
+2. Connect your serial device to the specified port.
+3. Run the script.
+4. Use an MQTT client (e.g., [MQTT Explorer](https://mqtt-explorer.com/)) to publish commands to the appropriate topics and observe responses and telemetry data.
+
+## Error Handling
+- The script has built-in error handling to manage issues such as:
+  - Invalid JSON payloads: If a command payload cannot be parsed, an error message is printed.
+  - Missing keys: If the required keys are missing from the JSON payload, an error message is printed.
+  - Serial communication errors: Errors during serial communication are caught and logged.
+
+  
