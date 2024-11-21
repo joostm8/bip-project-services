@@ -67,7 +67,7 @@ class TrajectoryMQTTWrapper:
         self.client.loop_forever()
 
 if __name__ == "__main__":
-    wrapper = TrajectoryMQTTWrapper(config_path="./gantry_system/crane-properties.yaml")
+    wrapper = TrajectoryMQTTWrapper(config_path="./crane_optimal_control/gantry_system/crane-properties.yaml")
     wrapper.start()
 
 # Serialization Method Explanation
