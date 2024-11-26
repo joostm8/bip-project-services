@@ -38,7 +38,7 @@ We have a VM set up that is running
 - Eclipse Hono
   - tenant ID: bip-server
   - devices: crane-1, crane-2, crane-3, conveyor-1, conveyor-2, conveyor-3
-  - password: ay2024-2025-[<device-name>]
+  - password: ay2024-2025-<devicename>
   - MQTT port: 8883
   - AMQP Southbound port: 5671
   - HTTP port: 8443
