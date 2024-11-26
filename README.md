@@ -49,14 +49,14 @@ Assuming the keyfile you generated is in `~/.ssh/netlab` (if you're on Windows i
 
 All ports:
 
-ssh -i ~/.ssh/netlab -L 3000:localhost:3000 -L 5432:localhost:5432 -L 1883:localhost:1883 -L 5671:localhost:5671 -L 8443:localhost:8443 -L 8883:localhost:8883 -L 15671:localhost:15671 -L 15672:localhost:15672 -L 28443:localhost:28443 [<yourstudentID>]@143.129.43.20
+    ssh -i ~/.ssh/netlab -L 3000:localhost:3000 -L 5432:localhost:5432 -L 1883:localhost:1883 -L 5671:localhost:5671 -L 8443:localhost:8443 -L 8883:localhost:8883 -L 15671:localhost:15671 -L 15672:localhost:15672 -L 28443:localhost:28443 [<yourstudentID>]@143.129.43.20
 
 Just Hono ports:
 
-ssh -i ~/.ssh/netlab -L 3000:localhost:3000 -L 5671:localhost:5671 -L 8443:localhost:8443 -L 8883:localhost:8883 -L 15671:localhost:15671 -L 15672:localhost:15672 -L 28443:localhost:28443 [<yourstudentID>]@143.129.43.20
+    ssh -i ~/.ssh/netlab -L 3000:localhost:3000 -L 5671:localhost:5671 -L 8443:localhost:8443 -L 8883:localhost:8883 -L 15671:localhost:15671 -L 15672:localhost:15672 -L 28443:localhost:28443 [<yourstudentID>]@143.129.43.20
 
 Just database and mqtt broker:
 
-ssh -i ~/.ssh/netlab -L 3000:localhost:3000 -L 5432:localhost:5432 -L 1883:localhost:1883 [<yourstudentID>]@143.129.43.20
+    ssh -i ~/.ssh/netlab -L 3000:localhost:3000 -L 5432:localhost:5432 -L 1883:localhost:1883 [<yourstudentID>]@143.129.43.20
 
 Don't close this terminal. All ports can now be accessed with localhost:portnumber.
