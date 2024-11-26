@@ -28,8 +28,8 @@
 - **Payload**:
   ```json
   {
-    "start": [0, 0, 0],
-    "stop": [10, 10, 10],
+    "start": 0,
+    "stop": 10,
     "genmethod": "ocp"
   }
   ```
@@ -50,7 +50,7 @@
 - **Payload**:
   ```json
   {
-    "position": [5, 5, 5]
+    "position": 5
   }
   ```
   - Description: Sends a command to move the gantry to the specified position.
@@ -60,7 +60,7 @@
 - **Payload**:
   ```json
   {
-    "position": [3, 3, 3]
+    "position": 3
   }
   ```
   - Description: Sends a command to move the gantry to the specified position without logging.
@@ -96,7 +96,7 @@
   - Example response:
     ```json
     {
-      "position": [5, 5, 5]
+      "position": 5
     }
     ```
 
@@ -104,7 +104,7 @@
   - Example response:
     ```json
     {
-      "position": [3, 3, 3]
+      "position": 3
     }
     ```
 
