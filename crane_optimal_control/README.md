@@ -11,7 +11,7 @@
 1. Clone the repository or download the Python script.
 2. Install the required Python packages:
    ```sh
-   pip install paho-mqtt pyserial PyYAML psycopg[binary] rockit-meco pytinamic
+   pip install paho-mqtt pyserial PyYAML psycopg[binary] rockit-meco pytrinamic
    ```
 
 ## Configuration
