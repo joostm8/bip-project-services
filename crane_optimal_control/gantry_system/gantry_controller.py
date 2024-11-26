@@ -190,7 +190,7 @@ class GantryController():
         serialized_trajectory = pickle.dumps(traj)
         self.mqttc.publish(request_topic, serialized_trajectory, qos = 2, retain=False)
         print(f"Published request to topic: {request_topic}")
-        print("Waiting for trajectory response...")
+        print("Waiting for trajectory store response...")
         self.response_event.wait()  # Blocks until the response is received
         return   
 
@@ -217,7 +217,7 @@ class GantryController():
         serialized_trajectory = pickle.dumps(measurement)
         self.mqttc.publish(request_topic, serialized_trajectory, qos = 2, retain=False)
         print(f"Published request to topic: {request_topic}")
-        print("Waiting for trajectory response...")
+        print("Waiting for measurement store response...")
         self.response_event.wait()  # Blocks until the response is received
         return 
 
