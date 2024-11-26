@@ -14,6 +14,10 @@ Repo containing all mqtt services needed for the bip project
   - mqtt_trajectory_generator.py
   - mqtt_database_writer.py
   - TimescaleDB database
+ 
+The dependency on the database can be disabled by using method `mqttMoveWithoutLog` instead of `mqttMoveWithLog`. You could add an MQTT topic for this if needed,
+or make the change yourself in `mqtt_trajectory_generator.py`. TODO Joost: implement this.
+
 
 ### conveyor system
 No dependencies between
@@ -26,7 +30,8 @@ No dependencies
 We have a VM set up that is running
 - A timescaleDB database
   - user: postgres
-  - password: postgres\
+  - password: postgres
+  - database: gantrycrane
   - port: 5432
 - MQTT broker
   - no authentication
@@ -60,3 +65,82 @@ Just database, grafana and mqtt broker:
     ssh -i ~/.ssh/netlab -L 3000:localhost:3000 -L 5432:localhost:5432 -L 1883:localhost:1883 [<yourstudentID>]@143.129.43.20
 
 Don't close this terminal. All ports can now be accessed with localhost:portnumber.
+
+## Database tables
+
+**IMPORTANT** all groups have access to all database tables. Usually there is a `machine_id`, `id` or similar as one of the columns in the table.
+When you make database writes, make sure to put that field to your own group number to not overwrite data of other groups. In the table description below, we have added a **this is your groupd identifier** for each of the tables.
+
+Preferably use a program such as DBeaver [https://dbeaver.io/] to view the database tables.
+
+Below, the tables are described in alphabetical order.
+
+### table - cargomanifest
+
+Table containing the cargomanifest, that is, which container is expected to be at which position
+
+|slot|pos_x|pos_y|state|container_id|ship_id|
+|----|-----|-----|-----|------------|-------|
+
+- slot: the slot id, a slot is a fillable space on the ship
+- pos_x: the x position of the slot
+- pos_y: the y position of the slot
+- state: {empty, fillable, filled}, the state of the slot
+- container_id: the id of the container that is supposed to fill this slot. Right now a simple 1 to 1 mapping of slot to container id is used.
+- ship_id: the id of the ship to which this slot belongs to. **this is your groupd identifier**
+
+### table - container
+
+|container_id|weight|
+|------------|------|
+
+- container_id: the container id
+- weight: the weight of this container
+
+This table is common for all groups, therefore there is no group identifier
+
+### table - machine
+
+|machine_id|name|
+|----------|----|
+
+- machine_id: the id of the crane/machine. **this is your groupd identifier**
+- name: a description
+
+### table - measurement
+
+|ts|machine_id|run_id|quantity|value|
+|--|----------|------|--------|-----|
+
+- ts: timestamp
+- machine_id: id of the machine to which this measurement belongs. **this is your groupd identifier**
+- run_id: id of the run (that is, a single trajectory)
+- quantity: the quantity of the value
+- value: value of the measurement
+
+### table - quantity
+
+|name|symbol|unit|
+|----|------|----|
+
+- name: name of the quantity {position, velocity, acceleration, angular position, angular velocity, angular acceleration, force}
+- symbol: symbol of that quantity
+- unit: unit of the quantity
+
+This table is common for all groups, therefore there is no group identifier
+
+### table - quay
+
+|slot|pos_x|pos_y|state|container_id|machine_id|
+|----|-----|-----|-----|------------|----------|
+
+- slot: the slot id, a slot is a fillable space on the quay
+- pos_x: the x position of the slot
+- pos_y: the y position of the slot
+- state: {empty, fillable, filled}, the state of the slot
+- container_id: the id of the container that is currently occupying this spot. NULL when not occupied
+- ship_id: the id of the ship to which this slot belongs to. **this is your groupd identifier**
+
+
+
+
