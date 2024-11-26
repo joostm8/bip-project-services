@@ -11,7 +11,7 @@
 1. Clone the repository or download the Python script.
 2. Install the required Python packages:
    ```sh
-   pip install paho-mqtt pyserial PyYAML psycopg[binary] rockit-meco pytinamic
+   pip install paho-mqtt pyserial PyYAML psycopg[binary] rockit-meco pytrinamic
    ```
 
 ## Configuration
@@ -28,8 +28,8 @@
 - **Payload**:
   ```json
   {
-    "start": [0, 0, 0],
-    "stop": [10, 10, 10],
+    "start": 0,
+    "stop": 10,
     "genmethod": "ocp"
   }
   ```
@@ -50,7 +50,7 @@
 - **Payload**:
   ```json
   {
-    "position": [5, 5, 5]
+    "position": 5
   }
   ```
   - Description: Sends a command to move the gantry to the specified position.
@@ -60,7 +60,7 @@
 - **Payload**:
   ```json
   {
-    "position": [3, 3, 3]
+    "position": 3
   }
   ```
   - Description: Sends a command to move the gantry to the specified position without logging.
@@ -78,7 +78,7 @@
 ### 2. Response Topics
 - **Publish Topic**: `command/bip-server/{DEVICE_ID}/res/{request_id}/{command}`
   - The script publishes responses to this topic based on the received command.
-  - Example response topic: `command/bip-server/1/res/req/G4`
+  - Example response topic: `command/bip-server/1/res/{request_id}/G4`
 
 - **Trajectory Response Topic**: `command/bip-server/{DEVICE_ID}/res/{trajectory_id}/generate-trajectory`
   - The generated trajectory is serialized and published to this topic.
@@ -96,7 +96,7 @@
   - Example response:
     ```json
     {
-      "position": [5, 5, 5]
+      "position": 5
     }
     ```
 
@@ -104,7 +104,7 @@
   - Example response:
     ```json
     {
-      "position": [3, 3, 3]
+      "position": 3
     }
     ```
 
