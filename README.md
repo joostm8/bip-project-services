@@ -9,13 +9,13 @@ Repo containing all mqtt services needed for the bip project
 
 ## Services dependencies
 
-# crane
+### crane
 - mqtt_gantry_controller.py - Depends on:
   - mqtt_trajectory_generator.py
   - mqtt_database_writer.py
 
-# conveyor system
+### conveyor system
 No dependencies between
 
-# ship simulation
+### ship simulation
 No dependencies
