@@ -5,6 +5,9 @@ import cv2
 import numpy as np
 from aruco_detector import ArucoDetector
 
+GROUP_ID = 1
+CAM_ID = 0
+
 class ArucoMQTTService:
     def __init__(self, id = 1, detector = None):
         if detector is None:
@@ -82,9 +85,9 @@ class ArucoMQTTService:
 # Main function to run the service
 if __name__ == "__main__":
     # Initialize and start the Aruco MQTT service
-    detector = ArucoDetector(show_rejected=True, cam_id=0)
+    detector = ArucoDetector(show_rejected=True, cam_id=CAM_ID)
 
-    aruco_service = ArucoMQTTService(detector=detector)
+    aruco_service = ArucoMQTTService(detector=detector, id = GROUP_ID)
     aruco_service.start()
 
     while True:
