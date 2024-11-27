@@ -6,6 +6,7 @@ Repo containing all mqtt services needed for the bip project
 - [Conveyor Belt](./conveyor_belt_G2MQTT/README.md)
 - [Ship Simulator](./ship_simulator/README.md)
 - [Crane System](./crane_optimal_control/README.md)
+- [Marker Identification](./aruco_identification/README.md)
 
 ## Services dependencies
 
