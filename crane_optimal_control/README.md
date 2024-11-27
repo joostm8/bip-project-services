@@ -6,7 +6,7 @@
 - [pyserial](https://pypi.org/project/pyserial/) library for serial communication
 - [PyYAML](https://pypi.org/project/PyYAML/) library for YAML configuration handling
 - [psycopg](https://pypi.org/project/psycopg/) library for PostgreSQL database communication
-- [rockit](https://gitlab.kuleuven.be/meco-software/rockit)
+- [rockit](https://gitlab.kuleuven.be/meco-software/rockit) toolbox to generate optimal trajectories
 ## Installation
 1. Clone the repository or download the Python script.
 2. Install the required Python packages:
