@@ -395,9 +395,11 @@ class MockGantryController(GantryController):
         """
         curr_time = datetime.min
         real_time = [curr_time + timedelta(seconds=ts) for ts in traj[0]]
+        # sleep for the duration of the trajectory to "execute" it
         sleep(max(0, traj[0][-1]))
-        return (traj[0], traj[1], traj[2], traj[3], traj[4], traj[5])
-        return (real_time, traj[1], traj[2], traj[4], traj[5])
+        # add a bit of measurement noise to the trajectory
+        noise = np.random.normal(loc=0, scale=0.005, size = (5, len(traj[0])))
+        return (traj[0], traj[1] + noise[0,:], traj[2] + noise[1,:], traj[3] + noise[2,:], traj[4] + noise[3,:], traj[5] + noise[4,:])
     
     @override
     def simpleMove(self, target):
