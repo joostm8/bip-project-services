@@ -26,7 +26,7 @@ The following steps should help you getting an up and running project.
      - Press `Ctrl + Shift + P` to open the command palette
      - Select `Tasks: Run Task`
      - Select the task `Run All`
-8.  You're all set, refer to the readmes of the services for further details.
+8.  You're all set, refer to the readmes of the services for further details, and specifically on how to configure your group ID in the files!
 
 ## Services Tutorials 
 - [Conveyor Belt](./conveyor_belt_G2MQTT/README.md)
