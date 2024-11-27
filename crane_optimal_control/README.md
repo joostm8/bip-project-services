@@ -23,6 +23,8 @@
 - **Gantry System Configuration**: Update the `config.yaml` file with machine properties for gantry system control.
 - **Database Configuration**: Update the `config.yaml` file with properties such as database address, name, user, and password for storing trajectories and measurements.
 
+## mqtt_trajectory_generator.py interface
+
 #### Generate Trajectory Command
 - **Topic**: `command/bip-server/{DEVICE_ID}/req/{trajectory-id}/generate-trajectory`
 - **Payload**:
@@ -36,6 +38,8 @@
    - Description: Sends a command to generate a trajectory between the start and stop points using the specified method (`ocp` or `lqr`).
 - **Response Topic**: `command/bip-server/{DEVICE_ID}/res/{trajectory-id}/generate-trajectory`
 - **Response Payload**: pickled trajectory.
+
+## mqtt_gantry_controller.py interface
 
 #### Gantry Hoist Command
 - **Topic**: `command/bip-server/{DEVICE_ID}/req/{response-id}/hoist`
@@ -87,6 +91,8 @@
     "position": <the actual position>
   }
   ```
+
+## mqtt_database_writer.py interface
 
 #### Store Trajectory Command
 - **Topic**: `command/bip-server/{DEVICE_ID}/req/store-trajectory`
