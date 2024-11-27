@@ -27,6 +27,17 @@ No dependencies between
 ### ship simulation
 No dependencies
 
+### aruco marker identification
+No dependencies
+
+### Teacher solution
+- `mqtt_gantry_controller.py`
+- `mqtt_trajectory_generator.py`
+- `mqtt_database_writer.py`
+- `mqtt_aruco_detector.py`
+- `GtoMQTT.py`
+
+
 ## Connecting to VM on server
 
 We have a VM set up that is running
