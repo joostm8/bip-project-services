@@ -14,15 +14,6 @@
    pip install paho-mqtt pyserial PyYAML psycopg[binary] rockit-meco pytrinamic
    ```
 
-## Configuration
-- **MQTT Broker**: Set the `MQTT_BROKER` and `MQTT_PORT` variables to match your MQTT broker settings.
-- **Device ID**: Set the `DEVICE_ID` variable to uniquely identify your device.
-- **Serial Port**: Update `SERIAL_PORT` with the appropriate port name (e.g., `COM5` for Windows, `/dev/ttyUSB0` for Linux).
-- **Baud Rate**: Set the desired `BAUD_RATE` for serial communication.
-- **Trajectory Generation Configuration**: Update the `config.yaml` file to include the machine ID and other relevant properties.
-- **Gantry System Configuration**: Update the `config.yaml` file with machine properties for gantry system control.
-- **Database Configuration**: Update the `config.yaml` file with properties such as database address, name, user, and password for storing trajectories and measurements.
-
 ## Running the code
 
 run each file in a separate terminal
@@ -30,6 +21,10 @@ run each file in a separate terminal
       python mqtt_gantry_controller.py
       python mqtt_database_writer.py
       python mqtt_trajectory_generator.py
+
+## Configuration
+
+The scripts get their configuration from `crane-properties.yaml`. For you there is only one important parameter in there, which is `machine id`, which you should set equal to your group number.
 
 ## mqtt_trajectory_generator.py interface
 
