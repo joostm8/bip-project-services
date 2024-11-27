@@ -69,7 +69,9 @@ Don't close this terminal. All ports can now be accessed with localhost:portnumb
 ## Database tables
 
 **IMPORTANT** all groups have access to all database tables. Usually there is a `machine_id`, `id` or similar as one of the columns in the table.
-When you make database writes, make sure to put that field to your own group number to not overwrite data of other groups. In the table description below, we have added a **this is your groupd identifier** for each of the tables.
+When you make database writes, make sure to put that field to your own group number to not overwrite data of other groups. In the table description below, we have added a **this is your group identifier** for each of the tables.
+
+For the `mqtt_database_writer.py`, this is handled for you if you set the `machine id` field in `crane-properties.yaml`. 
 
 Preferably use a program such as DBeaver [https://dbeaver.io/] to view the database tables.
 
@@ -141,6 +143,36 @@ This table is common for all groups, therefore there is no group identifier
 - container_id: the id of the container that is currently occupying this spot. NULL when not occupied
 - ship_id: the id of the ship to which this slot belongs to. **this is your groupd identifier**
 
+### table - quay
+
+|run_id|machine_id|starttime|
+|------|----------|---------|
+
+This table is used to store the starttime of a run.
+
+- run_id: the id of the run
+- machine_id: the id of the machine executing the run. **this is your groupd identifier**
+- starttime: the starttime of the run
 
 
+### table - ship
 
+|id|roll|draft|
+|--|----|-----|
+
+- id: the id of the ship. **this is your groupd identifier**
+- roll: the roll of the ship
+- draft: the draft of the ship
+
+### table - trajectory
+
+This table is the equivalent of table measurement, but then to store the generated trajectories.
+
+|ts|machine_id|run_id|quantity|value|
+|--|----------|------|--------|-----|
+
+- ts: timestamp
+- machine_id: id of the machine to which this measurement belongs. **this is your groupd identifier**
+- run_id: id of the run (that is, a single trajectory)
+- quantity: the quantity of the value
+- value: value of the measurement
