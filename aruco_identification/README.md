@@ -20,7 +20,11 @@ Set `GROUP_ID` on top of the file equal to your group id. \
 You might have to change `CAM_ID` to the ID of your camera. Usually 0 is your built-in webcam that can be used for testing.
 To list available camera ids, you can execute `list_cameras.py`.
 
-# mqtt interface
+## marker generation
+
+To generate .png files of markers to test with, you can run `marker-generation.py`.
+
+## mqtt interface
 
 #### Generate Trajectory Command
 - **Topic**: `command/bip-server/{GROUP_ID}/req/{response-id}/aruco-id`
