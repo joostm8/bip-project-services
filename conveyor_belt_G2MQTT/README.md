@@ -1,5 +1,7 @@
 # G2MQTT Serial Interface - README
 
+**NOTE: The conveyor belt does not have a mock interface, so for your project, you're not likely to use it. It is here for completeness**
+
 ## Overview
 This project is an interface that connects a serial device to an MQTT broker, enabling data transfer between the serial device and MQTT topics. The script listens for incoming MQTT messages, processes them, and sends appropriate commands to the serial device. It also publishes telemetry data from the serial device to specific MQTT topics.
 

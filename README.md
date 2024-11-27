@@ -1,6 +1,47 @@
 # bip-project-services
 Repo containing all mqtt services needed for the bip project
 
+## Setup
+
+The following steps should help you getting an up and running project.
+
+1. clone this directory to your computer
+     git clone https://github.com/joostm8/bip-project-services.git
+2. open the cloned folder in your editor of choice, e.g. Visual Studio Code or PyCharm
+3. If you have not yet installed it, install [python](https://www.python.org/)
+4. Create a new virtual environment in python to install the various python packages. For VSCode that is:
+   - Open the command palette with Ctrl+Shift+P
+   - Select the option `Python: Select Interpreter`
+   - Select the option `Create Virtual Environment`
+   - Select the option `Venv`
+   - Select the Python version you'd like
+   - A new virtual environment is now created in your workspace.
+5. To make life a bit easier, we'll add a launch configuration that allows you to quickly open the current python file in a new terminal.
+     - If it does not exist yet, create a folder `.vscode`
+     - In that folder, create a file `launch.json`
+     - In that file, paste the following content:
+       ```
+       {
+         "version": "0.2.0",
+         "configurations": [
+                  {
+                 "name": "Run Python File",
+                 "type": "debugpy",
+                 "request": "launch",
+                 "program": "${file}",
+                 "justMyCode": true,
+                 "console": "integratedTerminal",
+                 "suppressMultipleSessionWarning": true
+                  }
+              ]
+          }
+       ```
+     - Now, when launching any of the services, you just open the file in the editor, and press `Ctrl + F5` to run that file. This will spawn the process in a new terminal.
+6. Install all the packages needed for the various services. For VSCode that is:
+   - Open a new terminal (Terminal > Open a new terminal or press Ctrl + Shift + `)
+   - execute `pip install paho-mqtt pyserial numpy PyYAML psycopg[binary] rockit-meco pytrinamic opencv-python`
+7. Set up a tunnel to the VM running the database, dashboard and mqtt broker. [Instructions can be found here](https://github.com/joostm8/bip-project-services/blob/main/README.md#connecting-to-vm-on-server)
+8.  You're all set, refer to the readmes of the services for further details.
 
 ## Services Tutorials 
 - [Conveyor Belt](./conveyor_belt_G2MQTT/README.md)
