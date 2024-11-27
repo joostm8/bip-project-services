@@ -1,6 +1,25 @@
 # bip-project-services
 Repo containing all mqtt services needed for the bip project
 
+## Setup
+
+The following steps should help you getting an up and running project.
+
+1. clone this directory to your computer
+     git clone https://github.com/joostm8/bip-project-services.git
+2. open the cloned folder in your editor of choice, e.g. Visual Studio Code or PyCharm
+3. If you have not yet installed it, install [python](https://www.python.org/)
+4. Create a new virtual environment in python to install the various python packages. For VSCode that is:
+   - Open the command palette with Ctrl+Shift+P
+   - Select the option `Python: Select Interpreter`
+   - Select the option `Create Virtual Environment`
+   - Select the option `Venv`
+   - Select the Python version you'd like
+   - A new virtual environment is now created in your workspace.
+5. Install all the packages needed for the various services. For VSCode that is:
+   - Open a new terminal (Terminal > Open a new terminal or press Ctrl + Shift + `)
+   - execute `pip install paho-mqtt pyserial numpy PyYAML psycopg[binary] rockit-meco pytrinamic opencv-python`
+6. You're all set, refer to the readmes of the services for further details.
 
 ## Services Tutorials 
 - [Conveyor Belt](./conveyor_belt_G2MQTT/README.md)
