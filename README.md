@@ -19,7 +19,8 @@ The following steps should help you getting an up and running project.
 5. Install all the packages needed for the various services. For VSCode that is:
    - Open a new terminal (Terminal > Open a new terminal or press Ctrl + Shift + `)
    - execute `pip install paho-mqtt pyserial numpy PyYAML psycopg[binary] rockit-meco pytrinamic opencv-python`
-6. You're all set, refer to the readmes of the services for further details.
+6. Set up a tunnel to the VM running the database, dashboard and mqtt broker. [Instructions can be found here](https://github.com/joostm8/bip-project-services/blob/main/README.md#connecting-to-vm-on-server)
+7.  You're all set, refer to the readmes of the services for further details.
 
 ## Services Tutorials 
 - [Conveyor Belt](./conveyor_belt_G2MQTT/README.md)
