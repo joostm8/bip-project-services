@@ -23,6 +23,14 @@
 - **Gantry System Configuration**: Update the `config.yaml` file with machine properties for gantry system control.
 - **Database Configuration**: Update the `config.yaml` file with properties such as database address, name, user, and password for storing trajectories and measurements.
 
+## Running the code
+
+run each file in a separate terminal
+
+      python mqtt_gantry_controller.py
+      python mqtt_database_writer.py
+      python mqtt_trajectory_generator.py
+
 ## mqtt_trajectory_generator.py interface
 
 #### Generate Trajectory Command
