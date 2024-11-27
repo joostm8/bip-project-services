@@ -1,0 +1,70 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "mqtt aruco detector",
+            "type": "shell",
+            "command": "python ./aruco_identification/mqtt_aruco_detector.py",
+            "presentation": {
+                "reveal": "always",
+                "group": "groupA",
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "mqtt trajectory generator",
+            "type": "shell",
+            "command": "python ./crane_optimal_control/mqtt_trajectory_generator.py",
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "group": "groupA",
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "mqtt database writer",
+            "type": "shell",
+            "command": "python ./crane_optimal_control/mqtt_database_writer.py",
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "group": "groupA",
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "mqtt gantry controller",
+            "type": "shell",
+            "command": "python ./crane_optimal_control/mqtt_gantry_controller.py",
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "group": "groupA",
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "mqtt ship simulation",
+            "type": "shell",
+            "command": "python ./ship_simulator/src/shipsimulationmain.py",
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "group": "groupA",
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "Run All",
+            "dependsOn": [
+                "mqtt aruco detector",
+                "mqtt trajectory generator",
+                "mqtt database writer",
+                "mqtt gantry controller",
+                "mqtt ship simulation"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}
