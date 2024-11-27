@@ -36,7 +36,7 @@ The following steps should help you getting an up and running project.
               ]
           }
        ```
-     - Now, when launching any of the services, you just open the file in the editor, and press `Ctrl + F5` to run that launch configuration. This will spawn the process in a new terminal.
+     - Now, when launching any of the services, you just open the file in the editor, and press `Ctrl + F5` to run that file. This will spawn the process in a new terminal.
 6. Install all the packages needed for the various services. For VSCode that is:
    - Open a new terminal (Terminal > Open a new terminal or press Ctrl + Shift + `)
    - execute `pip install paho-mqtt pyserial numpy PyYAML psycopg[binary] rockit-meco pytrinamic opencv-python`
