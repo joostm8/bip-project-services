@@ -7,6 +7,7 @@ Repo containing all mqtt services needed for the bip project
 - [Ship Simulator](./ship_simulator/README.md)
 - [Crane System](./crane_optimal_control/README.md)
 - [Marker Identification](./aruco_identification/README.md)
+- [Teacher Solution](./bip-teacher-solution-main/README.md)
 
 ## Services dependencies
 
