@@ -64,6 +64,16 @@ class DirectDatabaseWriter:
         query = f"SELECT state FROM cargomanifest WHERE \
             ship_id = {self.id} and slot = {slot};"
         return self._dbRead(query)[0][0]
+    
+    def getContainerInShipSlot(self, slot):
+        """
+        Gets a slot's state.
+
+        returns 'empty', 'fillable' or 'filled'
+        """
+        query = f"SELECT container_id FROM cargomanifest WHERE \
+            ship_id = {self.id} and slot = {slot};"
+        return self._dbRead(query)[0][0]
 
     def getContainerWeight(self, container):
         """
@@ -124,6 +134,17 @@ class DirectDatabaseWriter:
         query = f"SELECT state FROM quay WHERE \
             machine_id = {self.id} and slot = {slot};"
         return self._dbRead(query)[0][0]
+    
+        
+    def getContainerInQuaySlot(self, slot):
+        """
+        Gets the container id that is in a slot.
+
+        returns the container id.
+        """
+        query = f"SELECT container_id FROM quay WHERE \
+            machine_id = {self.id} and slot = {slot};"
+        return self._dbRead(query)[0][0]
 
     def setShipRoll(self, roll):
         """
@@ -176,3 +197,6 @@ if __name__ == "__main__":
     print(roll)
     dbw.setShipRoll(draft + 1)
     print(dbw.getShipRoll())
+    print(dbw.getContainerInQuaySlot(0))
+    print(dbw.getContainerInShipSlot(0))
+    
