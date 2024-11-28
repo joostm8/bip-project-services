@@ -158,7 +158,7 @@ async def main():
     # Configuration
     MQTT_BROKER = "localhost"
     MQTT_PORT = 1883
-    SHIP_ID = "ship001"
+    SHIP_ID = "1"
     UNAME = "shipsim"
     PWD = "shipsim"
     

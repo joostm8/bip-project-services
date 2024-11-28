@@ -105,7 +105,7 @@ class ShipConnectivity:
         try:
             topic = f"telemetry/ship/{self.client_id}"
             payload = json.dumps(telemetry_data)
-            result = self.client.publish(topic, payload, qos=1)
+            result = self.client.publish(topic, payload, qos=1, retain=True)
             
             if result.rc != mqtt.MQTT_ERR_SUCCESS:
                 self.logger.error(f"Failed to publish telemetry: {result.rc}")
