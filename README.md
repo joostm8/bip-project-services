@@ -64,6 +64,13 @@ No dependencies
 - `mqtt_aruco_detector.py`
 - `GtoMQTT.py`
 
+## Grafana dashboard
+
+The dashboard is available on [localhost:3000](http://localhost:3000)
+
+The username is `admin` and the password is `default`.
+
+You'll find the visualization in `hamburger menu top left > dashboards > general > harbour-viz`
 
 ## Connecting to VM on server
 
