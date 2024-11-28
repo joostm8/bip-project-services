@@ -27,6 +27,7 @@ The following steps should help you getting an up and running project.
      - Select `Tasks: Run Task`
      - Select the task `Run All`
 8.  You're all set, refer to the readmes of the services for further details, and specifically on how to configure your group ID in the files!
+   Also have a look inside the bip-teacher-solution-main folder at the [minimal_example.py](./bip-teacher-solution-main/minimal_example.py).
 
 ## Services Tutorials 
 - [Conveyor Belt](./conveyor_belt_G2MQTT/README.md)
