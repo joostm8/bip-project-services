@@ -257,14 +257,13 @@ if __name__ == "__main__":
     sol = BipTeacherSolution()
     
     while True:
-        sol.clearAllEvents()
-        while not sol.checkForContainerArrival():
-            print("No container has arrived, sleeping for 1 second")
-            sleep(1)
+        # while not sol.checkForContainerArrival():
+        #     print("No container has arrived, sleeping for 1 second")
+        #     sleep(1)
         # input("pres enter when a container has been loaded:")
-        print("container has arrived, loading it to the scanning station")
-        sol.moveContainerToScanArea()
-        print("arrived ad scanning station, scanning...")
+        # print("container has arrived, loading it to the scanning station")
+        # sol.moveContainerToScanArea()
+        # print("arrived ad scanning station, scanning...")
         scanned_id = sol.scanContainer()
         while not scanned_id:
             scanned_id = sol.scanContainer()
@@ -274,7 +273,7 @@ if __name__ == "__main__":
         if scanned_id == sol.loadingorder[0]:
             print("Container can be loaded")
             print(f"Loading position is{sol.container_positions[scanned_id]}")
-            sol.acceptContainer()
+            #sol.acceptContainer()
             container_position = sol.container_positions[scanned_id-1]
             sol.hoistCrane(MOVE_HEIGHT)
             sol.moveCrane(PICKUP_POSITION)
