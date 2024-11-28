@@ -175,6 +175,28 @@ class DirectDatabaseWriter:
         """
         query = f"SELECT draft FROM ship WHERE id = {self.id};"
         return self._dbRead(query)[0][0]
+    
+    def resetShip(self):
+        """
+        Reset the Quay (all slots empty, bottom row fillable)
+        """
+        query = f"UPDATE cargomanifest SET state = 'empty' WHERE \
+            ship_id = {self.id};"
+        self._dbWrite(query)
+        query = f"UPDATE cargomanifest SET state = 'fillable' WHERE \
+            ship_id = {self.id} and slot in (0, 5, 10, 15, 20);"
+        self._dbWrite(query)
+
+    def resetQuay(self):
+        """
+        Reset the ship (all slots empty, bottom row fillable.)
+        """
+        query = f"UPDATE quay SET state = 'empty' WHERE \
+            machine_id = {self.id};"
+        self._dbWrite(query)
+        query = f"UPDATE quay SET state = 'fillable' WHERE \
+            machine_id = {self.id} and slot in (0, 3, 6, 12, 18);"
+        self._dbWrite(query)
 
 if __name__ == "__main__":
     dbw = DirectDatabaseWriter(1)
@@ -199,4 +221,6 @@ if __name__ == "__main__":
     print(dbw.getShipRoll())
     print(dbw.getContainerInQuaySlot(0))
     print(dbw.getContainerInShipSlot(0))
+    dbw.resetShip()
+    dbw.resetQuay()
     
