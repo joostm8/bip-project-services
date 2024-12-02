@@ -19,7 +19,7 @@ The following steps should help you getting an up and running project.
 5. Install all the packages needed for the various services. For VSCode that is:
    - Open a new terminal (Terminal > Open a new terminal or press Ctrl + Shift + `)
    - execute `pip install paho-mqtt pyserial numpy PyYAML psycopg[binary] rockit-meco pytrinamic opencv-python`
-6. Set up a tunnel to the VM running the database, dashboard and mqtt broker. [Instructions can be found here](https://github.com/joostm8/bip-project-services/blob/main/README.md#connecting-to-vm-on-server)
+6. Set up a tunnel to the VM running the database, dashboard and mqtt broker. [Instructions can be found here](https://github.com/joostm8/bip-project-services/blob/main/README.md#connecting-to-vm-on-server) **OR** run your database, Grafana and MQTT broker locally by setting up the docker containers you download from Blackboard `Intensive Week > Case Study and Labs > docker-containers-student-backup.zip`, the readme is in the .zip archive.
 7. To make your life easier, if you're running visual studio code, we have included a launch file and a launch task in `.vscode/launch.json` and `.vscode/tasks.json`.
    - The launch file allows you to run any python file in a new terminal. Just open the file, then press `Ctrl + F5` to run the launch configuration. Helpful when you want to spawn a new process.
    - The task file contains a task that spawns all the mqtt services at once, side-by-side in your terminal. To run it, you
