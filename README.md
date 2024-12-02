@@ -74,6 +74,8 @@ You'll find the visualization in `hamburger menu top left > dashboards > general
 
 ## Connecting to VM on server
 
+**Authenticate with your student username and password in the [VPN](https://www.uantwerpen.be/en/library/search-help/remote-access/)**
+
 We have a VM set up that is running
 - A timescaleDB database
   - user: postgres
