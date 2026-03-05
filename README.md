@@ -1,4 +1,5 @@
 # bip-project-services
+
 Repo containing all mqtt services needed for the bip project
 
 ## Setup
@@ -6,7 +7,7 @@ Repo containing all mqtt services needed for the bip project
 The following steps should help you getting an up and running project.
 
 1. clone this directory to your computer
-     git clone https://github.com/joostm8/bip-project-services.git
+  `git clone https://github.com/joostm8/bip-project-services.git`
 2. open the cloned folder in your editor of choice, e.g. Visual Studio Code or PyCharm
 3. If you have not yet installed it, install [python](https://www.python.org/)
 4. Create a new virtual environment in python to install the various python packages. For VSCode that is:
@@ -26,43 +27,54 @@ The following steps should help you getting an up and running project.
      - Press `Ctrl + Shift + P` to open the command palette
      - Select `Tasks: Run Task`
      - Select the task `Run All`
-8.  You're all set, refer to the readmes of the services for further details, and specifically on how to configure your group ID in the files!
-   Also have a look inside the bip-teacher-solution-main folder at the [minimal_example.py](./bip-teacher-solution-main/minimal_example.py).
+8. You're all set, refer to the readmes of the services for further details, and specifically on how to configure your group ID in the files!
+  Also have a look inside the teacher examples folder at [run_minimal_example.py](./examples/bip_teacher_solution_main/run_minimal_example.py).
 
-## Services Tutorials 
-- [Conveyor Belt](./conveyor_belt_G2MQTT/README.md)
-- [Ship Simulator](./ship_simulator/README.md)
-- [Crane System](./crane_optimal_control/README.md)
-- [Marker Identification](./aruco_identification/README.md)
-- [Teacher Solution](./bip-teacher-solution-main/README.md)
+## Repository layout
+
+- `src/<service_package>/...`: service implementation code
+- `examples/<service>/...`: runnable scripts and demos
+
+## Services Tutorials
+
+- [Conveyor Belt](./examples/conveyor_belt_g2mqtt/run_g_to_mqtt.py)
+- [Ship Simulator](./examples/ship_simulator/run_ship_simulation.py)
+- [Crane System](./examples/crane_optimal_control/run_mqtt_gantry_controller.py)
+- [Marker Identification](./examples/aruco_identification/run_mqtt_aruco_detector.py)
+- [Teacher Solution](./examples/bip_teacher_solution_main/run_minimal_example.py)
 
 ## Services dependencies
 
 ### crane
-- mqtt_gantry_controller.py - Depends on:
-  - mqtt_trajectory_generator.py
-  - mqtt_database_writer.py
+
+- examples/crane_optimal_control/run_mqtt_gantry_controller.py - Depends on:
+  - examples/crane_optimal_control/run_mqtt_trajectory_generator.py
+  - examples/crane_optimal_control/run_mqtt_database_writer.py
   - TimescaleDB database
- 
+
 The dependency on the database can be disabled by using method `mqttMoveWithoutLog` instead of `mqttMoveWithLog`. You could add an MQTT topic for this if needed,
-or make the change yourself in `mqtt_trajectory_generator.py`. TODO Joost: implement this.
+or make the change yourself in `src/crane_optimal_control/mqtt_trajectory_generator.py`. TODO Joost: implement this.
 
 
 ### conveyor system
+
 No dependencies between
 
 ### ship simulation
+
 No dependencies
 
 ### aruco marker identification
+
 No dependencies
 
 ### Teacher solution
-- `mqtt_gantry_controller.py`
-- `mqtt_trajectory_generator.py`
-- `mqtt_database_writer.py`
-- `mqtt_aruco_detector.py`
-- `GtoMQTT.py`
+
+- `examples/crane_optimal_control/run_mqtt_gantry_controller.py`
+- `examples/crane_optimal_control/run_mqtt_trajectory_generator.py`
+- `examples/crane_optimal_control/run_mqtt_database_writer.py`
+- `examples/aruco_identification/run_mqtt_aruco_detector.py`
+- `examples/conveyor_belt_g2mqtt/run_g_to_mqtt.py`
 
 ## Grafana dashboard
 
@@ -77,6 +89,7 @@ You'll find the visualization in `hamburger menu top left > dashboards > general
 **Authenticate with your student username and password in the [VPN](https://www.uantwerpen.be/en/library/search-help/remote-access/)**
 
 We have a VM set up that is running
+
 - A timescaleDB database
   - user: postgres
   - password: postgres
@@ -88,7 +101,7 @@ We have a VM set up that is running
 - Grafana dashboard
   - user: admin
   - password: default
-  - port: 3000 
+  - port: 3000
 - Eclipse Hono
   - tenant ID: bip-server
   - devices: crane-1, crane-2, crane-3, conveyor-1, conveyor-2, conveyor-3
@@ -99,7 +112,7 @@ We have a VM set up that is running
   - device registry: 28443
   - AMQP Northbound port: 15671, 15672
 
-Assuming the keyfile you generated is in `~/.ssh/netlab` (if you're on Windows it's likely in `C:\Users\[<yourusername>]\.ssh\netlab`), the command to set up and ssh tunnel is: 
+Assuming the keyfile you generated is in `~/.ssh/netlab` (if you're on Windows it's likely in `C:\Users\[<yourusername>]\.ssh\netlab`), the command to set up and ssh tunnel is:
 
 All ports:
 
@@ -120,7 +133,7 @@ Don't close this terminal. All ports can now be accessed with localhost:portnumb
 **IMPORTANT** all groups have access to all database tables. Usually there is a `machine_id`, `id` or similar as one of the columns in the table.
 When you make database writes, make sure to put that field to your own group number to not overwrite data of other groups. In the table description below, we have added a **this is your group identifier** for each of the tables.
 
-For the `mqtt_database_writer.py`, this is handled for you if you set the `machine id` field in `crane-properties.yaml`. 
+For the `src/crane_optimal_control/mqtt_database_writer.py`, this is handled for you if you set the `machine id` field in `src/crane_optimal_control/gantry_system/crane-properties.yaml`.
 
 Preferably use a program such as DBeaver [https://dbeaver.io/] to view the database tables.
 
@@ -180,7 +193,7 @@ This table is common for all groups, therefore there is no group identifier
 
 This table is common for all groups, therefore there is no group identifier
 
-### table - quay
+### table - run
 
 |slot|pos_x|pos_y|state|container_id|machine_id|
 |----|-----|-----|-----|------------|----------|

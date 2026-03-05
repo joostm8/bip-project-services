@@ -4,7 +4,7 @@
         {
             "label": "mqtt aruco detector",
             "type": "shell",
-            "command": "python ./aruco_identification/mqtt_aruco_detector.py",
+            "command": "python ./examples/aruco_identification/run_mqtt_aruco_detector.py",
             "presentation": {
                 "reveal": "always",
                 "group": "groupA",
@@ -14,7 +14,7 @@
         {
             "label": "mqtt trajectory generator",
             "type": "shell",
-            "command": "python ./crane_optimal_control/mqtt_trajectory_generator.py",
+            "command": "python ./examples/crane_optimal_control/run_mqtt_trajectory_generator.py",
             "group": "none",
             "presentation": {
                 "reveal": "always",
@@ -25,7 +25,7 @@
         {
             "label": "mqtt database writer",
             "type": "shell",
-            "command": "python ./crane_optimal_control/mqtt_database_writer.py",
+            "command": "python ./examples/crane_optimal_control/run_mqtt_database_writer.py",
             "group": "none",
             "presentation": {
                 "reveal": "always",
@@ -36,7 +36,7 @@
         {
             "label": "mqtt gantry controller",
             "type": "shell",
-            "command": "python ./crane_optimal_control/mqtt_gantry_controller.py",
+            "command": "python ./examples/crane_optimal_control/run_mqtt_gantry_controller.py",
             "group": "none",
             "presentation": {
                 "reveal": "always",
@@ -47,7 +47,7 @@
         {
             "label": "mqtt ship simulation",
             "type": "shell",
-            "command": "python ./ship_simulator/src/shipsimulationmain.py",
+            "command": "python ./examples/ship_simulator/run_ship_simulation.py",
             "group": "none",
             "presentation": {
                 "reveal": "always",
