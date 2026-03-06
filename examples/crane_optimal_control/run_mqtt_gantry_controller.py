@@ -6,12 +6,12 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from crane_optimal_control.mqtt_gantry_controller import ControllerMQTTWrapper
+from mqtt_crane.mqtt_crane_controller import MQTTCraneController
 
 
 def run(mock: bool = True) -> None:
     config_path = ROOT / "src" / "crane_optimal_control" / "gantry_system" / "crane-properties.yaml"
-    wrapper = ControllerMQTTWrapper(str(config_path), mock=mock)
+    wrapper = MQTTCraneController(str(config_path), mock=mock)
     wrapper.start()
 
 

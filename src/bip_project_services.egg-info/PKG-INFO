@@ -2,4 +2,9 @@ Metadata-Version: 2.4
 Name: bip-project-services
 Version: 0.1.0
 Summary: BIP project services organized in src layout
-Requires-Python: >=3.10
+Requires-Python: >=3.13
+Requires-Dist: paho-mqtt
+Requires-Dist: pyserial
+Requires-Dist: numpy
+Requires-Dist: PyYAML
+Requires-Dist: opencv-python

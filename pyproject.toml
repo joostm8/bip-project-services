@@ -6,7 +6,14 @@ build-backend = "setuptools.build_meta"
 name = "bip-project-services"
 version = "0.1.0"
 description = "BIP project services organized in src layout"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
+dependencies = [
+	"paho-mqtt",
+	"pyserial",
+	"numpy",
+	"PyYAML",
+	"opencv-python",
+]
 
 [tool.setuptools]
 package-dir = {"" = "src"}

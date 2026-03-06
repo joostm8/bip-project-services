@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 import psycopg
-from crane_optimal_control.gantry_system.trajectory_generator import TrajectoryGenerator
+from gantrylib.trajectory_generator import TrajectoryGenerator
 
 import yaml
 import json

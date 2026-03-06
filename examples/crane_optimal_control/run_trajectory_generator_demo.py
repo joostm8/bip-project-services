@@ -7,7 +7,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from crane_optimal_control.gantry_system.trajectory_generator import TrajectoryGenerator
+from mqtt_crane.gantry_system.trajectory_generator import TrajectoryGenerator
 
 
 def run() -> None:

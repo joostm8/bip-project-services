@@ -1,4 +1,4 @@
-from crane_optimal_control.gantry_system.trajectory_generator import TrajectoryGenerator
+from mqtt_crane.gantry_system.trajectory_generator import TrajectoryGenerator
 
 import yaml
 import json

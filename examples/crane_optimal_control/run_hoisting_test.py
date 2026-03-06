@@ -8,7 +8,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from TMC4671_printer.motors import HoistStepper
-from crane_optimal_control.gantry_system.hoisting_test import hoist
+from mqtt_crane.gantry_system.hoisting_test import hoist
 
 
 def run() -> None:

@@ -9,7 +9,7 @@ The following steps should help you getting an up and running project.
 1. clone this directory to your computer
   `git clone https://github.com/joostm8/bip-project-services.git`
 2. open the cloned folder in your editor of choice, e.g. Visual Studio Code or PyCharm
-3. If you have not yet installed it, install [python](https://www.python.org/)
+3. If you have not yet installed it, install [python](https://www.python.org/) (version 3.13+)
 4. Create a new virtual environment in python to install the various python packages. For VSCode that is:
    - Open the command palette with Ctrl+Shift+P
    - Select the option `Python: Select Interpreter`
@@ -17,23 +17,16 @@ The following steps should help you getting an up and running project.
    - Select the option `Venv`
    - Select the Python version you'd like
    - A new virtual environment is now created in your workspace.
-5. Install all the packages needed for the various services. For VSCode that is:
+5. Install the packages as an editable install.
    - Open a new terminal (Terminal > Open a new terminal or press Ctrl + Shift + `)
+   - execute `python -m pip install -e .`
+   - Dependencies will be installed automatically, however, there is one dependency that is not yet distributed on PyPi, which is the `gantrylib` package. It can be downloaded from: https://github.com/Cosys-Lab/lab-scale-gantry-crane (or clone with git), then unzip it and install it in the same python environment with `python -m pip install -e .` from the root folder.
    - execute `pip install paho-mqtt pyserial numpy PyYAML psycopg[binary] rockit-meco pytrinamic opencv-python`
-6. Set up a tunnel to the VM running the database, dashboard and mqtt broker. [Instructions can be found here](https://github.com/joostm8/bip-project-services/blob/main/README.md#connecting-to-vm-on-server) **OR** run your database, Grafana and MQTT broker locally by setting up the docker containers you download from Blackboard `Intensive Week > Case Study and Labs > docker-containers-student-backup.zip`, the readme is in the .zip archive.
-7. To make your life easier, if you're running visual studio code, we have included a launch file and a launch task in `.vscode/launch.json` and `.vscode/tasks.json`.
-   - The launch file allows you to run any python file in a new terminal. Just open the file, then press `Ctrl + F5` to run the launch configuration. Helpful when you want to spawn a new process.
-   - The task file contains a task that spawns all the mqtt services at once, side-by-side in your terminal. To run it, you
-     - Press `Ctrl + Shift + P` to open the command palette
-     - Select `Tasks: Run Task`
-     - Select the task `Run All`
-8. You're all set, refer to the readmes of the services for further details, and specifically on how to configure your group ID in the files!
-  Also have a look inside the teacher examples folder at [run_minimal_example.py](./examples/bip_teacher_solution_main/run_minimal_example.py).
 
 ## Repository layout
 
-- `src/<service_package>/...`: service implementation code
-- `examples/<service>/...`: runnable scripts and demos
+- `src/<package-name>/...`: implementation.
+- `examples/<package-name>/...`: examples and demos per package.
 
 ## Services Tutorials
 

@@ -6,7 +6,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from crane_optimal_control.mqtt_database_writer import DatabaseMQTTWrapper
+from mqtt_crane.mqtt_database_writer import DatabaseMQTTWrapper
 
 
 def run() -> None:
