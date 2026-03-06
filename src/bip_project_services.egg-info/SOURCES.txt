@@ -13,8 +13,8 @@ src/bip_project_services.egg-info/top_level.txt
 src/conveyor_belt_g2mqtt/__init__.py
 src/conveyor_belt_g2mqtt/g_to_mqtt.py
 src/mqtt_crane/__init__.py
+src/mqtt_crane/mqtt_crane_controller.py
 src/mqtt_crane/mqtt_database_writer.py
-src/mqtt_crane/mqtt_gantry_controller.py
 src/mqtt_crane/mqtt_trajectory_generator.py
 src/ship_simulator/__init__.py
 src/ship_simulator/connectivity.py

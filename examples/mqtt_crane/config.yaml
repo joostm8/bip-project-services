@@ -26,11 +26,11 @@ crane_IOUC_baudrate: 115200     # ignored in mock mode
 
 # machine motor controller settings
 cart_motor_type: serial         # serial or mock    
-cart_motor_port: /dev/ttyACM2          # ignored in mock mode
+cart_motor_port: /dev/ttyACM1          # ignored in mock mode
 cart_encoder_counts: 65536      # number of counts per revolution of the motor
 cart_pulley_circumference: 40 # [mm] circumference of the pulley on the cart motor
 hoist_motor_type: serial        # serial or mock
-hoist_motor_port: /dev/ttyACM3         # ignored in mock mode
+hoist_motor_port: /dev/ttyACM0         # ignored in mock mode
 hoist_encoder_counts: 65536     # number of counts per revolution of the motor
 hoist_pulley_circumference: 66  # [mm] circumference of the pulley on the hoist motor. 21*pi
 
@@ -74,12 +74,12 @@ root_mean_squared_error: True
 address: localhost
 
 # MQTT configuration
-mqtt:
-  host: ed1fe6fe.ala.eu-central-1.emqxsl.com
+mqtt:ed1fe6fe.ala.eu-central-1.emqxsl.com
+  host: 
   port: 8883
   username: crane-pi-1
   password: crane-pi
-  ca_cert_path: ./examples/mqtt_crane/emqxsl-ca.crt
+  ca_cert_path: emqxsl-ca.crt
   base_topic: bip/mqtt-lab
   qos: 2
   keepalive: 60
