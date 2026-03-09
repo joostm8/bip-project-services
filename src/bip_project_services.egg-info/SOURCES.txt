@@ -2,8 +2,6 @@ README.md
 pyproject.toml
 src/aruco_identification/__init__.py
 src/aruco_identification/aruco_detector.py
-src/aruco_identification/list_cameras.py
-src/aruco_identification/marker_generation.py
 src/aruco_identification/mqtt_aruco_detector.py
 src/bip_project_services.egg-info/PKG-INFO
 src/bip_project_services.egg-info/SOURCES.txt

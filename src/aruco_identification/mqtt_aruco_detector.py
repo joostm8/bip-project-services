@@ -1,35 +1,62 @@
 import json
-import pickle
+from pathlib import Path
 import paho.mqtt.client as mqtt
-import cv2
-import numpy as np
-from aruco_identification.aruco_detector import ArucoDetector
+import yaml
+from paho.mqtt.enums import MQTTErrorCode
 
-GROUP_ID = 1
-CAM_ID = 0
+def load_config(config_file="cam-config.yaml"):
+    with open(config_file, "r", encoding="utf-8") as file_handle:
+        config = yaml.safe_load(file_handle)
+    return config or {}
 
 class ArucoMQTTService:
-    def __init__(self, id = 1, detector = None):
+    def __init__(self, id=1, detector=None, config_path="cam-config.yaml"):
         if detector is None:
-            raise TypeError('Please provide a valid detector.')
+            raise TypeError("Please provide a valid detector.")
         self.detector = detector
-        self.id = id
 
-        self.client = mqtt.Client()
+
+        self.config = load_config(config_path)
+        mqtt_cfg = self.config.get("mqtt")
+        if mqtt_cfg is None:
+            raise ValueError("'mqtt' section not found in configuration file.")
+
+        self.broker_host = mqtt_cfg.get("host", "localhost")
+        self.broker_port = int(mqtt_cfg.get("port", 1883))
+        self.username = mqtt_cfg.get("username")
+        self.id = mqtt_cfg.get("username")
+        self.password = mqtt_cfg.get("password")
+        self.ca_cert_path = mqtt_cfg.get("ca_cert_path")
+        if self.ca_cert_path:
+            self.ca_cert_path = str((Path(config_path).parent / self.ca_cert_path).resolve())
+        self.base_topic = mqtt_cfg.get("base_topic", "bip/mqtt-lab")
+        configured_qos = int(mqtt_cfg.get("qos", 2))
+        self.qos = 2
+        if configured_qos != 2:
+            print(f"Configured QoS is {configured_qos}; overriding to QoS 2.")
+        self.keepalive = int(mqtt_cfg.get("keepalive", 60))
+
+        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        if self.ca_cert_path:
+            self.client.tls_set(ca_certs=self.ca_cert_path)
+        if self.username:
+            self.client.username_pw_set(self.username, self.password)
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
-        self.client.connect("localhost", 1883, 60)
+        self.client.connect(self.broker_host, self.broker_port, self.keepalive)
     
     # Callback when connected to MQTT broker
-    def on_connect(self, client, userdata, flags, rc):
-        print(f"Connected with result code {rc}")
+    def on_connect(self, client, userdata, flags, reason_code, properties):
+        print(f"Connected with reason code {reason_code}")
         # Subscribe to the request topic
-        topic = f"command/bip-server/{self.id}/req/#"
-        client.subscribe(topic)
-        print(f"Subscribed to topic: {topic}")
+        topic = f"{self.base_topic}/{self.id}/req/#"
+        (result, mid) = client.subscribe(topic, qos=self.qos)
+        if result == MQTTErrorCode.MQTT_ERR_SUCCESS:
+            print(f"Subscribed to topic: {topic}")
+        else:
+            print(f"Subscription unsuccessful to topic: {topic}")
 
     def on_message(self, client, userdata, msg):
-        # Parse the topic to extract the trajectory-id
         topic_parts = msg.topic.split('/')
         res_topic = topic_parts[-2]
         command_action = topic_parts[-1]
@@ -37,38 +64,34 @@ class ArucoMQTTService:
         # Validate if the command is the correct one
         if command_action == "aruco-id":
             try:
-                marker_id, _ = self.detector.detect()
+                detected_ids, _ = self.detector.detect()
 
                 # Prepare the response message
                 # respond even if id is none.
-                if marker_id is not None:
-                    print(marker_id)
-                    marker_id = [int(i) for id in ids for i in id]
-                    response = f"Marker ID: {[i for id in ids for i in id]}"
+                if detected_ids is not None:
+                    marker_ids = [int(value) for row in detected_ids for value in row]
                 else:
-                    response = "No marker detected"
-                    marker_id = []
+                    marker_ids = []
 
                 # Publish the response to the response topic
                 # Respond with the final position to the response topic
-                response_topic = f"command/bip-server/{self.id}/res/{res_topic}/aruco-id"
+                response_topic = f"{self.base_topic}/{self.id}/res/{res_topic}/aruco-id"
                 payload = {
-                    "id": marker_id
+                    "id": marker_ids
                 }
-                print(type(marker_id))
                 print(payload)
                 serialized_marker_ids = json.dumps(payload)
-                client.publish(response_topic, serialized_marker_ids, qos =2 )
+                client.publish(response_topic, serialized_marker_ids, qos=self.qos)
                 print(f"Published trajectory to topic: {response_topic}")
             except Exception as e:
                 print(f"Error processing message: {e}") 
                 # publish something anyway
-                response_topic = f"command/bip-server/{self.id}/res/{res_topic}/aruco-id"
+                response_topic = f"{self.base_topic}/{self.id}/res/{res_topic}/aruco-id"
                 payload = {
                     "id": []
                 }
                 serialized_marker_ids = json.dumps(payload)
-                client.publish(response_topic, serialized_marker_ids, qos =2 )
+                client.publish(response_topic, serialized_marker_ids, qos=self.qos)
                 print(f"Published trajectory to topic: {response_topic}")
 
 
@@ -79,6 +102,6 @@ class ArucoMQTTService:
 
     # Clean up resources
     def stop(self):
-        self.cap.release()
         self.client.loop_stop()
+        self.client.disconnect()
 

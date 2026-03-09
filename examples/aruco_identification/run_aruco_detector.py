@@ -1,17 +1,21 @@
 from pathlib import Path
 import sys
 import cv2
-
-ROOT = Path(__file__).resolve().parents[2]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
+import yaml
 
 from aruco_identification.aruco_detector import ArucoDetector
 
 
-def run() -> None:
-    detector = ArucoDetector(show_rejected=True, cam_id=0)
+def load_config(config_file: Path) -> dict:
+    with open(config_file, "r", encoding="utf-8") as file_handle:
+        config = yaml.safe_load(file_handle)
+    return config or {}
+
+
+def run(config_path = None) -> None:
+    config = load_config(config_path)
+    cam_id = int(config.get("cam", {}).get("cam_id", 0))
+    detector = ArucoDetector(show_rejected=True, cam_id=cam_id)
 
     while detector.input_video.isOpened():
         ids, frame = detector.detect()
@@ -24,4 +28,4 @@ def run() -> None:
 
 
 if __name__ == "__main__":
-    run()
+    run(config_path = "cam-config.yaml")

@@ -74,8 +74,8 @@ root_mean_squared_error: True
 address: localhost
 
 # MQTT configuration
-mqtt:ed1fe6fe.ala.eu-central-1.emqxsl.com
-  host: 
+mqtt:
+  host: ed1fe6fe.ala.eu-central-1.emqxsl.com
   port: 8883
   username: crane-pi-1
   password: crane-pi
