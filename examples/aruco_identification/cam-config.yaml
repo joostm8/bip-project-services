@@ -12,4 +12,9 @@ mqtt:
 
 # Camera configuration
 cam:
+  # Windows
   cam_id: 1
+  # Linux
+  cam_name: "/dev/video0"
+  # Optional: set false to force headless mode even if a display is available.
+  preview: true

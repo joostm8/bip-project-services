@@ -1,6 +1,7 @@
 # aruco_detector.py
+import platform
+
 import cv2
-import numpy as np
 
 class ArucoDetector:
 
@@ -17,11 +18,13 @@ class ArucoDetector:
         self.detector = cv2.aruco.ArucoDetector(self.dictionary, self.detector_params)
 
         # Video capture setup
-        self.video_source = video_source if video_source else cam_id
-        # must add cv2.CAP_DSHOW, otherwise startup takes a really long time, and setting manual
-        # focus does not work
-        self.input_video = cv2.VideoCapture(self.video_source, cv2.CAP_DSHOW)
-        # manually set focus
+        self.video_source = video_source if video_source is not None else cam_id
+        api_preference = self._get_api_preference(self.video_source)
+        self.input_video = cv2.VideoCapture(self.video_source, api_preference)
+
+        # Keep focus fixed across platforms so the camera locks to the same point.
+        # Some cameras require autofocus to be disabled before manual focus takes effect.
+        self.input_video.set(cv2.CAP_PROP_AUTOFOCUS, 0)
         self.input_video.set(cv2.CAP_PROP_FOCUS, 150)
         self.show_rejected = show_rejected
 
@@ -33,6 +36,24 @@ class ArucoDetector:
 
         if not self.input_video.isOpened():
             raise Exception("Error: Could not open video source.")
+
+    def _get_api_preference(self, source):
+        """Select a backend that works on both Windows and Linux camera devices."""
+        system = platform.system().lower()
+
+        # Device indices and /dev/videoX should use native camera backends.
+        if isinstance(source, int):
+            if system == "windows":
+                return cv2.CAP_DSHOW
+            if system == "linux":
+                return cv2.CAP_V4L2
+            return cv2.CAP_ANY
+
+        if isinstance(source, str) and source.startswith("/dev/video"):
+            return cv2.CAP_V4L2 if system == "linux" else cv2.CAP_ANY
+
+        # File/stream inputs should use automatic backend selection.
+        return cv2.CAP_ANY
 
     def detect(self):
         """
