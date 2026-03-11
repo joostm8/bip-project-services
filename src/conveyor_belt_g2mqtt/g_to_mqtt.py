@@ -114,10 +114,15 @@ class ConveyorMQTTService:
                     print("Handling Group G1")
                 case "G2":
                     direction = payload.get("dir")
-                    pulses = payload.get("pulses")
-                    if direction is None or pulses is None:
-                        raise KeyError("Missing 'dir' or 'pulses' key for G2 command.")
-                    command = f"{last_partition} {direction} {pulses}"
+                    duration_ms = payload.get("duration")
+                    if dir is None or duration_ms is None:
+                        raise KeyError("Missing 'dir' or 'duration' key for G2 command.")
+                    if dir not in {"F", "B"}:
+                        raise ValueError("Invalid 'dir' for G2 command. Expected 'F' or 'B'.")
+                    duration_ms = int(duration_ms)
+                    if duration_ms < 0 or duration_ms > 10000:
+                        raise ValueError("Invalid 'duration' for G2 command. Expected an integer between 0 and 10000.")
+                    command = f"{last_partition} {dir} T {duration_ms}"
                     print("Handling Group G2")
                 case "G3":
                     direction = payload.get("dir")
@@ -142,58 +147,6 @@ class ConveyorMQTTService:
                     print("Group not recognized")
                     unknown_command = True
 
-def on_message(client, userdata, msg):
-    print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
-    topic_parts = msg.topic.split('/')
-    res_topic = topic_parts[-2]
-    last_partition = topic_parts[-1]
-    try:
-        unknown_command = False
-        payload = json.loads(msg.payload.decode())  # Assuming payload is JSON
-        command = ""
-        match last_partition:
-            case "G1":
-                dir = payload.get("dir")
-                if dir is None:
-                    raise KeyError("Missing 'dir' key for G1 command.")
-                command = last_partition + " " + dir
-                print("Handling Group G1")
-            case "G2":
-                dir = payload.get("dir")
-                duration_ms = payload.get("duration")
-                if dir is None or duration_ms is None:
-                    raise KeyError("Missing 'dir' or 'duration' key for G2 command.")
-                if dir not in {"F", "B"}:
-                    raise ValueError("Invalid 'dir' for G2 command. Expected 'F' or 'B'.")
-                duration_ms = int(duration_ms)
-                if duration_ms < 0 or duration_ms > 10000:
-                    raise ValueError("Invalid 'duration' for G2 command. Expected an integer between 0 and 10000.")
-                command = f"{last_partition} {dir} T {duration_ms}"
-                print("Handling Group G2")
-            case "G3":
-                dir = payload.get("dir")
-                if dir is None:
-                    raise KeyError("Missing 'dir' key for G3 command.")
-                command = last_partition + " " + dir
-                print("Handling Group G3")
-            case "G4":
-                global request_id
-                request_id = (msg.topic).split("/")[-2]
-                command = last_partition
-                print("Handling Group G4" + request_id)
-            case "G5":
-                command = last_partition
-                print("Handling Group G5")
-            case "G6":
-                on_off = payload.get("on/off")
-                if on_off is None:
-                    raise KeyError("Missing 'on/off' key for G6 command.")
-                command = last_partition + " " + str(on_off)
-                print("Handling Group G6")
-            case _:
-                print("Group not recognized")
-                unknown_command = True
-
             if not unknown_command:
                 if self.ser is None:
                     raise RuntimeError("Serial connection is not available.")
@@ -213,7 +166,6 @@ def on_message(client, userdata, msg):
             print(f"Missing key in payload: {exc}")
         except Exception as exc:
             print(f"An unexpected error occurred while processing the message: {exc}")
-
 
     def extract_json(self, data_string):
         pattern = r"(\w+):\s*([\d.]+)"
