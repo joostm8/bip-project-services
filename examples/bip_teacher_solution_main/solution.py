@@ -132,9 +132,9 @@ class BipTeacherSolution:
         request_topic = f"command/bip-server/{self.id}/req/{self.response_id}/G2"
         payload = {
             "dir":"B",
-            "pulses":27
+            "T":2500
         }
-        # about 25 pulses backwards is sufficient to reach the sensor
+        # About 2.5 seconds backwards is typically sufficient to reach the sensor.
         self.client.publish(request_topic, json.dumps(payload), qos=2)
         print(f"Published request to topic: {request_topic}")
         print("Waiting for crane response...")
