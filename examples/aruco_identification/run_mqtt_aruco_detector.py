@@ -34,4 +34,4 @@ def run(config_path = None) -> None:
 
 
 if __name__ == "__main__":
-    run(config_path = "cam-config.yaml")
+    run("../config.yaml")

@@ -1,5 +1,5 @@
 %YAML 1.2
---- 
+---
 
 # machine (crane) identification
 machine_id: 1
@@ -88,3 +88,17 @@ mqtt:
 mqtt_motion:
   default_cart_velocity: 100
   default_hoist_velocity: 40
+
+serial:
+  port: COM16
+  baud_rate: 115200
+  timeout: 1.0
+
+telemetry:
+  enabled: true
+  # Maximum publish rate in Hz. Set to 0 to disable rate limiting.
+  publish_rate_hz: 0.5
+
+# Camera configuration
+cam:
+  cam_id: 1

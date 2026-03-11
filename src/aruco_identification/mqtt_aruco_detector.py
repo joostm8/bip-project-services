@@ -15,7 +15,6 @@ class ArucoMQTTService:
             raise TypeError("Please provide a valid detector.")
         self.detector = detector
 
-
         self.config = load_config(config_path)
         mqtt_cfg = self.config.get("mqtt")
         if mqtt_cfg is None:
