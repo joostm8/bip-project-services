@@ -90,7 +90,7 @@ mqtt_motion:
   default_hoist_velocity: 40
 
 serial:
-  port: COM16
+  port: /dev/ttyACM2
   baud_rate: 115200
   timeout: 1.0
 
