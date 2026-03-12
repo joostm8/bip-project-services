@@ -1,5 +1,5 @@
 from time import sleep
-from solution import (
+from examples.bip_teacher_solution_main.old.solution import (
     BipTeacherSolution,
     MOVE_HEIGHT,
     PICKUP_HEIGHT,

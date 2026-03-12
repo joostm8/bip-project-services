@@ -1,4 +1,4 @@
-from direct_database_writer import DirectDatabaseWriter
+from examples.bip_teacher_solution_main.old.direct_database_writer import DirectDatabaseWriter
 
 
 def run() -> None:

@@ -12,7 +12,7 @@ Needs shipsimulationmain.py to be running.
 import json
 from threading import Event
 import paho.mqtt.client as mqtt
-from direct_database_writer import DirectDatabaseWriter
+from examples.bip_teacher_solution_main.old.direct_database_writer import DirectDatabaseWriter
 from time import sleep
 
 
