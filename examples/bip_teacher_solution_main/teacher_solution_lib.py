@@ -343,6 +343,7 @@ class SolutionConfig:
     system_id: str = "crane-pi-1"
     mqtt_username: Optional[str] = None
     mqtt_password: Optional[str] = None
+    mqtt_ca_cert_path: Optional[str] = None
     ship_id: int = 1
     dry_run: bool = False
 
@@ -352,20 +353,20 @@ class SolutionConfig:
 
     # conveyor behavior
     poll_interval_s: float = 0.75
-    camera_move_duration_ms: int = 1800
-    camera_move_direction: str = "F"
-    accept_move_direction: str = "F"
-    reject_move_direction: str = "B"
+    camera_move_duration_ms: int = 2500
+    camera_move_direction: str = "B"
+    accept_move_direction: str = "B"
+    reject_move_direction: str = "F"
 
-    # crane positions in mm (from clarified requirements)
+    # crane positions in mm (from measured setup)
     conveyor_pickup_x_mm: int = 0
-    pickup_height_mm: int = 100
+    pickup_height_mm: int = 86
     travel_height_mm: int = 300
-    drop_height_row1_mm: int = 100
-    row2_drop_extra_mm: int = 30
+    drop_height_row1_mm: int = 35
+    row2_drop_extra_mm: int = 22
 
-    ship_start_x_mm: int = 300
-    wharf_start_x_mm: int = 150
+    ship_start_x_mm: int = 360
+    wharf_start_x_mm: int = 200
     slot_x_offset_mm: int = 40
 
 
@@ -375,6 +376,8 @@ class MqttRequestResponseClient:
         self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         if config.mqtt_username:
             self.client.username_pw_set(config.mqtt_username, config.mqtt_password)
+        if config.mqtt_ca_cert_path:
+            self.client.tls_set(ca_certs=config.mqtt_ca_cert_path)
 
         self._connected = threading.Event()
         self._pending_lock = threading.Lock()
@@ -853,6 +856,7 @@ def build_solution(
     system_id: str = "crane-pi-1",
     mqtt_username: Optional[str] = None,
     mqtt_password: Optional[str] = None,
+    mqtt_ca_cert_path: Optional[str] = None,
     ship_id: int = 1,
     seed: Optional[int] = None,
     dry_run: bool = False,
@@ -865,6 +869,7 @@ def build_solution(
         system_id=system_id,
         mqtt_username=mqtt_username,
         mqtt_password=mqtt_password,
+        mqtt_ca_cert_path=mqtt_ca_cert_path,
         ship_id=ship_id,
         dry_run=dry_run,
     )

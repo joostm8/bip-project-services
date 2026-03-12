@@ -115,14 +115,14 @@ class ConveyorMQTTService:
                 case "G2":
                     direction = payload.get("dir")
                     duration_ms = payload.get("duration")
-                    if dir is None or duration_ms is None:
+                    if direction is None or duration_ms is None:
                         raise KeyError("Missing 'dir' or 'duration' key for G2 command.")
-                    if dir not in {"F", "B"}:
+                    if direction not in {"F", "B"}:
                         raise ValueError("Invalid 'dir' for G2 command. Expected 'F' or 'B'.")
                     duration_ms = int(duration_ms)
                     if duration_ms < 0 or duration_ms > 10000:
                         raise ValueError("Invalid 'duration' for G2 command. Expected an integer between 0 and 10000.")
-                    command = f"{last_partition} {dir} T {duration_ms}"
+                    command = f"{last_partition} {direction} T {duration_ms}"
                     print("Handling Group G2")
                 case "G3":
                     direction = payload.get("dir")
