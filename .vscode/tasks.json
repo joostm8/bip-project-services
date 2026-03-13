@@ -56,6 +56,58 @@
             }
         },
         {
+            "label": "workflow aruco detector",
+            "type": "shell",
+            "command": "python run_mqtt_aruco_detector.py",
+            "options": {
+                "cwd": "${workspaceFolder}/examples/aruco_identification"
+            },
+            "presentation": {
+                "reveal": "always",
+                "group": "workflow-triple",
+                "panel": "dedicated"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "workflow conveyor g2mqtt",
+            "type": "shell",
+            "command": "python run_g_to_mqtt.py",
+            "options": {
+                "cwd": "${workspaceFolder}/examples/conveyor_belt_g2mqtt"
+            },
+            "presentation": {
+                "reveal": "always",
+                "group": "workflow-triple",
+                "panel": "dedicated"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "workflow mqtt crane example",
+            "type": "shell",
+            "command": "python mqtt_crane_example.py",
+            "options": {
+                "cwd": "${workspaceFolder}/examples/mqtt_crane"
+            },
+            "presentation": {
+                "reveal": "always",
+                "group": "workflow-triple",
+                "panel": "dedicated"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Aruco + Conveyor + MQTT Crane",
+            "dependsOn": [
+                "workflow aruco detector",
+                "workflow conveyor g2mqtt",
+                "workflow mqtt crane example"
+            ],
+            "dependsOrder": "parallel",
+            "problemMatcher": []
+        },
+        {
             "label": "Run All",
             "dependsOn": [
                 "mqtt aruco detector",
