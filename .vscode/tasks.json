@@ -58,7 +58,10 @@
         {
             "label": "workflow aruco detector",
             "type": "shell",
-            "command": "python run_mqtt_aruco_detector.py",
+            "command": "${command:python.interpreterPath}",
+            "args": [
+                "run_mqtt_aruco_detector.py"
+            ],
             "options": {
                 "cwd": "${workspaceFolder}/examples/aruco_identification"
             },
@@ -72,7 +75,10 @@
         {
             "label": "workflow conveyor g2mqtt",
             "type": "shell",
-            "command": "python run_g_to_mqtt.py",
+            "command": "${command:python.interpreterPath}",
+            "args": [
+                "run_g_to_mqtt.py"
+            ],
             "options": {
                 "cwd": "${workspaceFolder}/examples/conveyor_belt_g2mqtt"
             },
@@ -86,7 +92,10 @@
         {
             "label": "workflow mqtt crane example",
             "type": "shell",
-            "command": "python mqtt_crane_example.py",
+            "command": "${command:python.interpreterPath}",
+            "args": [
+                "mqtt_crane_example.py"
+            ],
             "options": {
                 "cwd": "${workspaceFolder}/examples/mqtt_crane"
             },
