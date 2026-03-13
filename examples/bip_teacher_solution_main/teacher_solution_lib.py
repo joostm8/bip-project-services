@@ -348,7 +348,7 @@ class SolutionConfig:
     dry_run: bool = False
 
     # retry/synchronization
-    base_timeout_s: float = 10.0
+    base_timeout_s: float = 30.0
     max_retries: int = 1
 
     # conveyor behavior
@@ -361,7 +361,7 @@ class SolutionConfig:
     # crane positions in mm (from measured setup)
     conveyor_pickup_x_mm: int = 0
     pickup_height_mm: int = 86
-    travel_height_mm: int = 300
+    travel_height_mm: int = 200
     drop_height_row1_mm: int = 35
     row2_drop_extra_mm: int = 22
 
@@ -509,7 +509,7 @@ class HarbourTeacherSolution:
             self.mqtt.close()
 
     def _generate_manifest_entries(self) -> List[ManifestEntry]:
-        container_ids = random.sample(range(0, 25), k=6)
+        container_ids = random.sample(range(1, 11), k=6)
         slot_ids = random.sample(range(1, 7), k=6)
         entries: List[ManifestEntry] = []
         for container_id, slot_id in zip(container_ids, slot_ids):
