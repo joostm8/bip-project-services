@@ -1,118 +1,79 @@
 # Conveyor Belt G2MQTT Interface
 
-The conveyor belt has no mock interface, so you will likely not use it directly in your project. It is included here for completeness.
-
-## MQTT Topics
-
-For students: this service is already running in the lab setup.
-Use this page to find the topic and payload definitions.
-
-| Direction | Topic pattern |
-|-----------|---------------|
-| Subscribe (commands) | `{base_topic}/{id}/req/#` |
-| Publish (responses)  | `{base_topic}/{id}/res/{request-id}/{command}` |
-| Publish (telemetry)  | `{base_topic}/{id}/telemetry` |
-
 ## Commands
 
 ### G1 – Move continuously
 
+- **Request topic**: `{base_topic}/{crane-id}/req/{response-id}/G1`
+- **Payload**:
 ```json
 { "dir": "F" }
 ```
 
-`dir`: `"F"` (forward) or `"B"` (backward). Runs until stopped or until a sensor is reached.
+`dir`: `"F"` (forward) or `"B"` (backward). Runs until stopped.
 
+- **Response topic**: `{base_topic}/{crane-id}/res/{response-id}/G1`
+- **Response payload**: None
 ### G2 – Move for a fixed duration
 
+- **Request topic**: `{base_topic}/{crane-id}/req/{response-id}/G2`
+- **Payload**:
 ```json
 { "dir": "F", "duration": 500 }
 ```
+`dir`: `"F"` (forward) or `"B"` (backward). `duration`: time in milliseconds, range `0` to `10000`.
 
-`duration`: time in milliseconds, range `0` to `10000`.
+- **Response topic**: `{base_topic}/{crane-id}/res/{response-id}/G1`
+- **Response payload**: None
 
 ### G3 – Move until sensor
 
+- **Request topic**: `{base_topic}/{crane-id}/req/{response-id}/G3`
+- **Payload**:
 ```json
 { "dir": "F" }
 ```
 
-Moves the conveyor until the start or end sensor is triggered.
+`dir`: `"F"` (forward) or `"B"` (backward). Moves the conveyor until the start or end sensor is triggered.
+
+- **Response topic**: `{base_topic}/{crane-id}/res/{response-id}/G1`
+- **Response payload**: None
 
 ### G4 – Query sensor state
-
-No payload required. The response is published to `{base_topic}/{id}/res/{request-id}/G4`:
-
+- **Request topic**: `{base_topic}/{crane-id}/req/{response-id}/G4`
+- **Payload**: None
+- **Response topic**: `{base_topic}/{crane-id}/res/{response-id}/G4`
+- **Response payload**: 
 ```json
-{ "START_SENSOR": 0, "END_SENSOR": 1, "PULSE_COUNT": 42 }
+{ "START_SENSOR": `, "END_SENSOR": 0, "PULSE_COUNT": 42 }
 ```
 
 ### G5 – Stop
 
-No payload required. Stops the conveyor immediately.
+- **Request topic**: `{base_topic}/{crane-id}/req/{response-id}/G5`
+- **Payload**: None
+- **Response topic**: `{base_topic}/{crane-id}/res/{response-id}/G5`
+- **Response payload**: None
 
-### G6 – Toggle output (e.g. light)
+### G6 – Toggle Electromagnet
 
+- **Request topic**: `{base_topic}/{crane-id}/req/{response-id}/G6`
+- **Payload**:
 ```json
 { "on/off": 1 }
 ```
 
-`0` = off, any other value = on.
+`0` = off, `1` = on.
 
-## Telemetry
+- **Response topic**: `{base_topic}/{crane-id}/res/{response-id}/G6`
+- **Response payload**: None
 
-Published periodically to `{base_topic}/{id}/telemetry`:
+## Swing Encoder Telemetry
+
+Published automatically to `{base_topic}/{id}/telemetry`:
 
 ```json
 { "A": 2.75, "V": 1.33 }
 ```
 
 `A` = angle, `V` = angular velocity.
-
-## Running locally
-
-Only use this section if you want to run or debug the service yourself.
-
-### Prerequisites
-
-- Python 3.x
-- [paho-mqtt](https://pypi.org/project/paho-mqtt/) for MQTT communication
-- [pyserial](https://pypi.org/project/pyserial/) for serial communication
-
-### Installation
-
-```sh
-pip install paho-mqtt pyserial
-```
-
-### Run command
-
-```sh
-python examples/conveyor_belt_g2mqtt/run_g_to_mqtt.py
-```
-
-### Configuration
-
-All settings are read from `config.yaml`:
-
-```yaml
-mqtt:
-  host: <broker address>
-  port: 8883
-  username: <your id>
-  password: <password>
-  ca_cert_path: <CA certificate path, optional>
-  base_topic: bip/mqtt-lab
-  qos: 2
-  keepalive: 60
-
-serial:
-  port: COM5
-  baud_rate: 115200
-  timeout: 1.0
-
-telemetry:
-  enabled: true
-  publish_rate_hz: 0.5
-```
-

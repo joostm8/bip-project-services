@@ -1,12 +1,16 @@
-﻿# ShipSimulation Python Class
-
-For students: the simulator services are already running in the lab setup.
-Use this page to understand the `ShipSimulation` API and method behavior.
+﻿# ShipSimulation Class
 
 This class models container loading and calculates ship stability.
 It does not handle MQTT directly.
 
-## Getting Started
+Import it with 
+
+```python
+from ship_simulator.container import Container
+from ship_simulator.shipsimulation import ShipSimulation
+```
+
+## Initialization
 
 ```python
 sim = ShipSimulation(width_slots=5, height_slots=5)
@@ -14,10 +18,10 @@ sim = ShipSimulation(width_slots=5, height_slots=5)
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `width_slots` | — | Number of container columns (beam direction) |
+| `width_slots` | — | Number of container columns (horizontal) |
 | `height_slots` | — | Number of container rows (vertical) |
-| `container_width` | 2.4 m | Width of one container slot |
-| `container_height` | 2.6 m | Height of one container slot |
+| `container_width` | 2.4 m | Width of one container slot. Keep at default |
+| `container_height` | 2.6 m | Height of one container slot. Keep at default |
 
 ## Container
 
@@ -33,15 +37,15 @@ container = Container(weight=20000, container_id="CONT001")
 
 The ship grid uses `(x, y)` coordinates:
 
-- **x** — column across the beam: `x=0` is the port side (left), `x=width_slots-1` is starboard (right).
-- **y** — row from keel upward: `y=0` is the bottom level, `y=height_slots-1` is the top.
+- **x** — columns (horizontal): Facing the ship, `x=0` is the left, `x=width_slots-1` is right.
+- **y** — rows (vertical): `y=0` is the bottom level, `y=height_slots-1` is the top row.
 
 Containers can only be placed on top of another container or on the bottom row (`y=0`).
 Only the topmost container in a column can be removed.
 
-## Key Methods
+## Methods
 
-### Adding and removing containers
+### Adding containers
 
 #### `process_container_add(container, x_slot, y_slot, max_heel_angle=5.0)`
 
@@ -53,6 +57,8 @@ success, message, heel_angle = sim.process_container_add(container, x_slot=2, y_
 
 Returns `(bool, str, float)`.
 If placement is invalid, `success` is `False` and `message` explains why.
+
+### Removing containers
 
 #### `process_container_remove(x_slot, y_slot)`
 
@@ -143,34 +149,11 @@ Prints KB, BM, KG, GM, GZ, righting moment, and equilibrium heel angle.
 
 ---
 
-## Fault injection (for teacher use)
+## Fault injection
+
+Use Fault injection on either the digital twin or the real ship to inject random faults in the container weight, which you can detect by comparing the real ship with the twin.
 
 ```python
 sim.enable_fault_injection()   # activates hidden weight modification for specific positions
 sim.disable_fault_injection()  # deactivates and clears injected data
-```
-
-When enabled, containers placed at certain positions will silently have their weight multiplied.
-Students are not expected to use these methods.
-
-## Running locally
-
-Only use this section if you want to run or debug the class locally.
-
-### Prerequisites
-
-- Python 3.x
-- `numpy`
-
-### Installation
-
-```sh
-pip install numpy
-```
-
-### Import
-
-```python
-from ship_simulator.shipsimulation import ShipSimulation
-from ship_simulator.container import Container
 ```

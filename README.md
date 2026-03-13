@@ -1,233 +1,77 @@
 # bip-project-services
 
-Repo containing all mqtt services needed for the bip project
+This repo contains all the services for the bip project.
 
-## Setup
+## Documentation for students
 
-The following steps should help you getting an up and running project.
+### MQTT interfaces
 
-1. clone this directory to your computer
-  `git clone https://github.com/joostm8/bip-project-services.git`
-2. open the cloned folder in your editor of choice, e.g. Visual Studio Code or PyCharm
-3. If you have not yet installed it, install [python](https://www.python.org/) (version 3.13+)
-4. Create a new virtual environment in python to install the various python packages. For VSCode that is:
-   - Open the command palette with Ctrl+Shift+P
-   - Select the option `Python: Select Interpreter`
-   - Select the option `Create Virtual Environment`
-   - Select the option `Venv`
-   - Select the Python version you'd like
-   - A new virtual environment is now created in your workspace.
-5. Install the packages as an editable install.
-   - Open a new terminal (Terminal > Open a new terminal or press Ctrl + Shift + `)
-   - execute `python -m pip install -e .`
-   - Dependencies will be installed automatically, however, there is one dependency that is not yet distributed on PyPi, which is the `gantrylib` package. It can be downloaded from: https://github.com/Cosys-Lab/lab-scale-gantry-crane (or clone with git), then unzip it and install it in the same python environment with `python -m pip install -e .` from the root folder.
-   - execute `pip install paho-mqtt pyserial numpy PyYAML psycopg[binary] rockit-meco pytrinamic opencv-python`
+In the [doc](./doc/) folder you will find a description of the available MQTT interfaces.
 
-## Repository layout
+You can:
+- [Scan ArUco markers to identify containers](./doc/aruco_identification.md)
+- [Control the conveyor belt's movement](./doc/conveyor_belt_g2mqtt.md)
+- [Control the crane's movement](./doc/mqtt_crane.md)
+- [Control the crane's electromagnet](./doc/conveyor_belt_g2mqtt.md)
 
-- `src/<package-name>/...`: implementation.
-- `examples/<package-name>/...`: examples and demos per package.
+To setup your own MQTT connection to the broker, reuse the credentials given to you in the MQTT-lab
+* Credentials: reuse the credentials given to you in the MQTT-lab
+* The `{base-topic}` is `bip/mqtt-lab`
+* The `{crane-id}` is `crane-pi-1` or `crane-pi-2`
+* The `{response-id}` you generate (e.g. a `uuid`) to be able to map requests to responses
 
-## Services Tutorials
+### Ship Simulation
 
-- [Conveyor Belt](./examples/conveyor_belt_g2mqtt/run_g_to_mqtt.py)
-- [Ship Simulator](./examples/ship_simulator/run_ship_simulation.py)
-- [Crane System](./examples/crane_optimal_control/run_mqtt_gantry_controller.py)
-- [Marker Identification](./examples/aruco_identification/run_mqtt_aruco_detector.py)
-- [Teacher Solution](./examples/bip_teacher_solution_main/run_minimal_example.py)
-
-## Services dependencies
-
-### crane
-
-- examples/crane_optimal_control/run_mqtt_gantry_controller.py - Depends on:
-  - examples/crane_optimal_control/run_mqtt_trajectory_generator.py
-  - examples/crane_optimal_control/run_mqtt_database_writer.py
-  - TimescaleDB database
-
-The dependency on the database can be disabled by using method `mqttMoveWithoutLog` instead of `mqttMoveWithLog`. You could add an MQTT topic for this if needed,
-or make the change yourself in `src/crane_optimal_control/mqtt_trajectory_generator.py`. TODO Joost: implement this.
-
-
-### conveyor system
-
-No dependencies between
-
-### ship simulation
-
-No dependencies
-
-### aruco marker identification
-
-No dependencies
+You'll also find [a description of the ship simulator's functions](./doc/ship_simulator.md)
 
 ### Teacher solution
 
-- `examples/crane_optimal_control/run_mqtt_gantry_controller.py`
-- `examples/crane_optimal_control/run_mqtt_trajectory_generator.py`
-- `examples/crane_optimal_control/run_mqtt_database_writer.py`
-- `examples/aruco_identification/run_mqtt_aruco_detector.py`
-- `examples/conveyor_belt_g2mqtt/run_g_to_mqtt.py`
+Lastly, you'll find the [teacher solution](./examples/bip_teacher_solution_main/harbour_terminal_solution.ipynb) as demonstrated at the start of the lecture.
 
-## Grafana dashboard
+## Documentation for lab assistants
 
-The dashboard is available on [localhost:3000](http://localhost:3000)
+The examples folder contains the three services you need to run up to make the entire system available over MQTT.
 
-The username is `admin` and the password is `default`.
+- [The crane](./examples/mqtt_crane/mqtt_crane_example.py)
+- [The conveyor](./examples/conveyor_belt_g2mqtt/run_g_to_mqtt.py)
+- [The ArUco scanner](./examples/aruco_identification/run_mqtt_aruco_detector.py)
 
-You'll find the visualization in `hamburger menu top left > dashboards > general > harbour-viz`
+### Setting up the environment
 
-## Connecting to VM on server
+I'm assuming you are using VS Code with Python extensions enabled.
 
-**Authenticate with your student username and password in the [VPN](https://www.uantwerpen.be/en/library/search-help/remote-access/)**
+1. Install Python 3.13 or up
+2. Create a new or select an existing virtual environment
+    1. Ctrl+Shift+P to open the command pallette
+    2. Python: Select Interpreter
+    3. Create Virtual Environment or select an existing one
+    4. Windows: make sure running scripts is enabled in Powershell. Open a Powershell as administrator and run `set-executionpolicy remotesigned`
+3. Open a new terminal in the repository root, check that the virtual environment is correctly activated
+4. Download or clone the repository https://github.com/Cosys-Lab/lab-scale-gantry-crane
+5. Install that repository as editable package with `pip install -e <path-to-lab-scale-gantry-crane>` (needed for the mqtt crane)
+6. Install this repository as editable package with `pip install -e .`
 
-We have a VM set up that is running
+### Setting up the config
 
-- A timescaleDB database
-  - user: postgres
-  - password: postgres
-  - database: gantrycrane
-  - port: 5432
-- MQTT broker
-  - no authentication
-  - port: 1883
-- Grafana dashboard
-  - user: admin
-  - password: default
-  - port: 3000
-- Eclipse Hono
-  - tenant ID: bip-server
-  - devices: crane-1, crane-2, crane-3, conveyor-1, conveyor-2, conveyor-3
-  - password: ay2024-2025-devicename
-  - MQTT port: 8883
-  - AMQP Southbound port: 5671
-  - HTTP port: 8443
-  - device registry: 28443
-  - AMQP Northbound port: 15671, 15672
+In the [config.yaml](./examples/config.yaml), you need to specify the ports of the Arduino, the motor drivers and the video device.
 
-Assuming the keyfile you generated is in `~/.ssh/netlab` (if you're on Windows it's likely in `C:\Users\[<yourusername>]\.ssh\netlab`), the command to set up and ssh tunnel is:
-
-All ports:
-
-    ssh -i ~/.ssh/netlab -L 3000:localhost:3000 -L 5432:localhost:5432 -L 1883:localhost:1883 -L 5671:localhost:5671 -L 8443:localhost:8443 -L 8883:localhost:8883 -L 15671:localhost:15671 -L 15672:localhost:15672 -L 28443:localhost:28443 [<yourstudentID>]@143.129.43.20
-
-Just Hono ports:
-
-    ssh -i ~/.ssh/netlab -L 3000:localhost:3000 -L 5671:localhost:5671 -L 8443:localhost:8443 -L 8883:localhost:8883 -L 15671:localhost:15671 -L 15672:localhost:15672 -L 28443:localhost:28443 [<yourstudentID>]@143.129.43.20
-
-Just database, grafana and mqtt broker:
-
-    ssh -i ~/.ssh/netlab -L 3000:localhost:3000 -L 5432:localhost:5432 -L 1883:localhost:1883 [<yourstudentID>]@143.129.43.20
-
-Don't close this terminal. All ports can now be accessed with localhost:portnumber.
-
-## Database tables
-
-**IMPORTANT** all groups have access to all database tables. Usually there is a `machine_id`, `id` or similar as one of the columns in the table.
-When you make database writes, make sure to put that field to your own group number to not overwrite data of other groups. In the table description below, we have added a **this is your group identifier** for each of the tables.
-
-For the `src/crane_optimal_control/mqtt_database_writer.py`, this is handled for you if you set the `machine id` field in `src/crane_optimal_control/gantry_system/crane-properties.yaml`.
-
-Preferably use a program such as DBeaver [https://dbeaver.io/] to view the database tables.
-
-Below, the tables are described in alphabetical order.
-
-### table - cargomanifest
-
-Table containing the cargomanifest, that is, which container is expected to be at which position
-
-|slot|pos_x|pos_y|state|container_id|ship_id|
-|----|-----|-----|-----|------------|-------|
-
-- slot: the slot id, a slot is a fillable space on the ship
-- pos_x: the x position of the slot
-- pos_y: the y position of the slot
-- state: {empty, fillable, filled}, the state of the slot
-- container_id: the id of the container that is supposed to fill this slot. Right now a simple 1 to 1 mapping of slot to container id is used.
-- ship_id: the id of the ship to which this slot belongs to. **this is your groupd identifier**
-
-### table - container
-
-|container_id|weight|
-|------------|------|
-
-- container_id: the container id
-- weight: the weight of this container
-
-This table is common for all groups, therefore there is no group identifier
-
-### table - machine
-
-|machine_id|name|
-|----------|----|
-
-- machine_id: the id of the crane/machine. **this is your groupd identifier**
-- name: a description
-
-### table - measurement
-
-|ts|machine_id|run_id|quantity|value|
-|--|----------|------|--------|-----|
-
-- ts: timestamp
-- machine_id: id of the machine to which this measurement belongs. **this is your groupd identifier**
-- run_id: id of the run (that is, a single trajectory)
-- quantity: the quantity of the value
-- value: value of the measurement
-
-### table - quantity
-
-|name|symbol|unit|
-|----|------|----|
-
-- name: name of the quantity {position, velocity, acceleration, angular position, angular velocity, angular acceleration, force}
-- symbol: symbol of that quantity
-- unit: unit of the quantity
-
-This table is common for all groups, therefore there is no group identifier
-
-### table - run
-
-|slot|pos_x|pos_y|state|container_id|machine_id|
-|----|-----|-----|-----|------------|----------|
-
-- slot: the slot id, a slot is a fillable space on the quay
-- pos_x: the x position of the slot
-- pos_y: the y position of the slot
-- state: {empty, fillable, filled}, the state of the slot
-- container_id: the id of the container that is currently occupying this spot. NULL when not occupied
-- ship_id: the id of the ship to which this slot belongs to. **this is your groupd identifier**
-
-### table - quay
-
-|run_id|machine_id|starttime|
-|------|----------|---------|
-
-This table is used to store the starttime of a run.
-
-- run_id: the id of the run
-- machine_id: the id of the machine executing the run. **this is your groupd identifier**
-- starttime: the starttime of the run
+#### Windows
+Inspect device manager for the serial ports and run the [list_cameras.py](./examples/aruco_identification/list_cameras.py) script for the video device.
 
 
-### table - ship
+#### Linux
 
-|id|roll|draft|
-|--|----|-----|
+Run `ls /dev | grep tty` for serial device paths and `v4l2-ctl --list-devices` for the video device path. I've also added the[tty_path_to_device.bash](./examples/tty_path_to_device.bash) which maps the device path to a name, to differentiate motor drivers from the Arduino.
 
-- id: the id of the ship. **this is your groupd identifier**
-- roll: the roll of the ship
-- draft: the draft of the ship
+### Running the three services
 
-### table - trajectory
+A VS Code task is provided to make launching these easy.
 
-This table is the equivalent of table measurement, but then to store the generated trajectories.
+1. Ctrl+Shift+P
+2. Tasks: Run Task
+3. `Run Aruco + Conveyor + MQTT Crane`
 
-|ts|machine_id|run_id|quantity|value|
-|--|----------|------|--------|-----|
+Three terminals should spawn side-by-side and start the three services.
 
-- ts: timestamp
-- machine_id: id of the machine to which this measurement belongs. **this is your groupd identifier**
-- run_id: id of the run (that is, a single trajectory)
-- quantity: the quantity of the value
-- value: value of the measurement
+The terminal running `mqtt_crane.py` is going to ask for zeroing the hoist, which you must confirm with enter. If no movement occurs on the crane, double check that the crane's power supply is on.
+
