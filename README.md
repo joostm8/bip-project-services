@@ -4,6 +4,28 @@ This repo contains all the services for the bip project.
 
 ## Documentation for students
 
+### Installation
+
+You have to install this repository as a package to use the packages in your code.
+
+First clone the repository with the command
+
+`git clone https://github.com/joostm8/bip-project-services.git`
+
+Navigate into the folder
+
+`cd bip-project-services`
+
+Checkout the `flat-to-src-refactor` branch
+
+`git checkout flat-to-src-refactor`
+
+Install the repository as a package
+
+`pip install -e .`
+
+Test the installation by opening for example the teacher notebook and testing the imports.
+
 ### MQTT interfaces
 
 In the [doc](./doc/) folder you will find a description of the available MQTT interfaces.
