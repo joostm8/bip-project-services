@@ -474,6 +474,7 @@ class HarbourTeacherSolution:
         self._dry_queue: List[int] = []
         self._dry_current_container_id: Optional[int] = None
         self._dry_sensor_has_container = False
+        self._dry_rejected_container_waiting_unload = False
 
     def initialize(self, seed: Optional[int] = None) -> List[ManifestEntry]:
         if seed is not None:
@@ -496,6 +497,7 @@ class HarbourTeacherSolution:
             self._dry_queue = [999] + [item.container_id for item in sorted_entries]
             self._dry_current_container_id = None
             self._dry_sensor_has_container = False
+            self._dry_rejected_container_waiting_unload = False
 
         self._sync_ship_state_to_db()
         return entries
@@ -620,10 +622,15 @@ class HarbourTeacherSolution:
             return {"id": [self._dry_current_container_id]}
 
         if command == "G3":
-            # Direction does not change behavior in dry-run; both accept and reject clear conveyor occupancy.
-            _ = payload.get("dir")
+            direction = payload.get("dir")
+            if direction == self.config.reject_move_direction:
+                self._dry_sensor_has_container = True
+                self._dry_rejected_container_waiting_unload = self._dry_current_container_id is not None
+                return {}
+
             self._dry_current_container_id = None
             self._dry_sensor_has_container = False
+            self._dry_rejected_container_waiting_unload = False
             return {}
 
         if command == "hoist":
@@ -647,6 +654,15 @@ class HarbourTeacherSolution:
 
     def conveyor_move_until_sensor(self, direction: str) -> Dict[str, Any]:
         return self._request("G3", {"dir": direction})
+
+    def dry_run_unload_rejected_container(self) -> None:
+        if not self.config.dry_run:
+            return
+        if not self._dry_rejected_container_waiting_unload:
+            return
+        self._dry_current_container_id = None
+        self._dry_sensor_has_container = False
+        self._dry_rejected_container_waiting_unload = False
 
     def camera_scan(self) -> Dict[str, Any]:
         return self._request("aruco-id", {})
