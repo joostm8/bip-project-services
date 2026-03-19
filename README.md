@@ -16,9 +16,9 @@ Navigate into the folder
 
 `cd bip-project-services`
 
-Checkout the `flat-to-src-refactor` branch
+Checkout the `flat-to-src-layout-refactor` branch
 
-`git checkout flat-to-src-refactor`
+`git checkout flat-to-src-layout-refactor`
 
 Install the repository as a package
 
