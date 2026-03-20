@@ -412,16 +412,11 @@ class ShipSimulation:
 
             # Check convergence
             if abs(new_heel - heel_angle) < tolerance:
-                # Return stability evaluated at the converged equilibrium angle.
-                # The loop stability value is for the previous iteration angle.
-                final_stability = self.calculate_stability_at_heel(new_heel)
-                return new_heel, final_stability
+                return new_heel, stability
 
             heel_angle = (heel_angle + new_heel) / 2  # Take average for stability
 
-        # If no strict convergence, return a self-consistent pair.
-        final_stability = self.calculate_stability_at_heel(heel_angle)
-        return heel_angle, final_stability
+        return heel_angle, stability
 
     def print_stability_analysis(self):
         """Print comprehensive stability analysis including heeled condition"""
@@ -491,8 +486,6 @@ class ShipSimulation:
     def get_telemetry(self):
         heel_angle, heeled_stability = self.calculate_equilibrium_heel()
         draft, draftinfo = self.calculate_draught()
-        heeled_stability['heel_angle'] = heel_angle
-        heeled_stability['equilibrium_heel_angle'] = heel_angle
         heeled_stability['draught'] = draft
         return heeled_stability
 
